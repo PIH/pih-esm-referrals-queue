@@ -4,14 +4,7 @@ import { defineConfigSchema, validators } from "@openmrs/esm-module-config";
 import { BrowserRouter, Route } from "react-router-dom";
 import ReferralsQueue from "./referrals-queue/referrals-queue.component";
 
-defineConfigSchema("@pih/esm-referrals-queue", {
-  displayGreeting: {
-    validators: [validators.isBoolean],
-    default: true
-  }
-  /* See the esm-module-config documentation:
-      https://wiki.openmrs.org/display/projects/openmrs-esm-module-config */
-});
+defineConfigSchema("@pih/esm-referrals-queue", {});
 
 function Root(props) {
   return (

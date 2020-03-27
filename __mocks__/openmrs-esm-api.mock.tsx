@@ -4,6 +4,10 @@ export function openmrsFetch() {
   return new Promise(() => {});
 }
 
+export function openmrsObservableFetch() {
+  return of({ data: { entry: [] } });
+}
+
 export function getCurrentUser() {
   return of({ authenticated: false });
 }
