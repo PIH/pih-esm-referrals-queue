@@ -19,9 +19,53 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   }, []);
 
   return (
-    <div className={styles.greeting}>
-      <Trans i18nKey="referrals queue">Referrals Queue</Trans>
-      <div>{JSON.stringify(referrals, null, 2)}</div>
+    <div className="omrs-main-content">
+      <div className={styles.greeting}>
+        <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
+      </div>
+      <div>
+        <table>
+          <thead>
+            <tr className="omrs-bold">
+              <td>
+                <Trans i18nKey="emr-id">EMR ID</Trans>
+              </td>
+              <td>
+                <Trans i18nKey="name">Name</Trans>
+              </td>
+              <td>
+                <Trans i18nKey="referral-date">Referral Date</Trans>
+              </td>
+              <td>
+                <Trans i18nKey="referral-type">Referral Type</Trans>
+              </td>
+              <td>
+                <Trans i18nKey="details">Details</Trans>
+              </td>
+              <td>
+                <Trans i18nKey="status">Status</Trans>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            {referrals &&
+              referrals.map((referral, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <tr>
+                      <td>{referral.zl_emr_id}</td>
+                      <td>{referral.patient_name}</td>
+                      <td>{referral.referral_date}</td>
+                      <td>{referral.referral_type}</td>
+                      <td>{referral.status}</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
