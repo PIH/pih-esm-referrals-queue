@@ -22,17 +22,6 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
 
   console.log(referrals); // eslint-disable-line no-console
 
-  const makePtDashLink = (patientId, patientUuid) => (
-    <ConfigurableLink
-      label={patientId}
-      spa={config.links.patientDash.spa}
-      url={interpolateString(config.links.patientDash.url, {
-        patientId,
-        patientUuid
-      })}
-    />
-  );
-
   return (
     <div className={`omrs-main-content ${styles.container}`}>
       <div className="omrs-card omrs-margin-top-32 omrs-padding-16">
@@ -70,13 +59,28 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                     <React.Fragment key={index}>
                       <tr className={styles.tr}>
                         <td>
-                          {makePtDashLink(
-                            referral.zl_emr_id,
-                            referral.person_uuid
-                          )}
+                          <ConfigurableLink
+                            label={referral.zl_emr_id}
+                            spa={config.links.patientDash.spa}
+                            url={interpolateString(
+                              config.links.patientDash.url,
+                              {
+                                patientUuid: referral.person_uuid
+                              }
+                            )}
+                          />
                         </td>
                         <td>{referral.patient_name}</td>
-                        <td>{formatDate(referral.referral_date)}</td>
+                        <td>
+                          <ConfigurableLink
+                            label={formatDate(referral.referral_date)}
+                            spa={config.links.visitPage.spa}
+                            url={interpolateString(config.links.visitPage.url, {
+                              patientUuid: referral.person_uuid,
+                              visitUuid: referral.visit_uuid
+                            })}
+                          />
+                        </td>
                         <td>{referral.referral_type}</td>
                         <td>{referral.details}</td>
                         <td>&nbsp;</td>

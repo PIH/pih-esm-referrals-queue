@@ -14,6 +14,10 @@ export function useConfig() {
     patientDash: {
       spa: false,
       url: "/pt-dash/${patientId}"
+    },
+    visitPage: {
+      spa: false,
+      url: "/visit/${visitUuid}"
     }
   };
 }
