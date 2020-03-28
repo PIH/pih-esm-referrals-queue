@@ -10,7 +10,7 @@ export default function ConfigurableLink({
   const absoluteUrlRegex = new RegExp("^(?:[a-z]+:)?//", "i");
   if (!spa && !url.match(absoluteUrlRegex)) {
     //@ts-ignore
-    url = window.openmrsBase + "/" + url;
+    url = window.openmrsBase + url;
   }
   return spa ? (
     <Link to={url} className={className}>

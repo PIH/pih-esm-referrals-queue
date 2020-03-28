@@ -20,7 +20,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     return () => sub.unsubscribe();
   }, []);
 
-  console.log(referrals); // eslint-disable-line no-console
+  // console.log(referrals);
 
   return (
     <div className={`omrs-main-content ${styles.container}`}>

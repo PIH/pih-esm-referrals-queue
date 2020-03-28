@@ -11,13 +11,15 @@ export const validator = () => {};
 
 export function useConfig() {
   return {
-    patientDash: {
-      spa: false,
-      url: "/pt-dash/${patientId}"
-    },
-    visitPage: {
-      spa: false,
-      url: "/visit/${visitUuid}"
+    links: {
+      patientDash: {
+        spa: false,
+        url: "/pt-dash/${patientUuid}"
+      },
+      visitPage: {
+        spa: false,
+        url: "/visit/${patientUuid}/${visitUuid}"
+      }
     }
   };
 }
