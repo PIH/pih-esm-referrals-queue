@@ -1,10 +1,34 @@
 import React from "react";
 import openmrsRootDecorator from "@openmrs/react-root-decorator";
-import { defineConfigSchema, validators } from "@openmrs/esm-module-config";
+import {
+  defineConfigSchema,
+  validators,
+  validator
+} from "@openmrs/esm-module-config";
 import { BrowserRouter, Route } from "react-router-dom";
 import ReferralsQueue from "./referrals-queue/referrals-queue.component";
 
-defineConfigSchema("@pih/esm-referrals-queue", {});
+defineConfigSchema("@pih/esm-referrals-queue", {
+  links: {
+    patientDash: {
+      spa: {
+        default: false,
+        validators: [validators.isBoolean]
+      },
+      url: {
+        default:
+          "/coreapps/clinicianfacing/patient.page?patientId=${patientUuid}&app=pih.app.clinicianDashboard",
+        validators: [
+          validators.isString,
+          validator(
+            s => !s.includes("`"),
+            "url template may not include backticks"
+          )
+        ]
+      }
+    }
+  }
+});
 
 function Root(props) {
   return (

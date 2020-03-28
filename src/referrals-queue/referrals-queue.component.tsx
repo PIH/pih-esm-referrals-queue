@@ -4,6 +4,8 @@ import { createErrorHandler } from "@openmrs/esm-error-handling";
 import { Trans } from "react-i18next";
 import styles from "./referrals-queue.css";
 import { getReferrals } from "./referrals-queue.resource";
+import { formatDate, interpolateString } from "../util";
+import ConfigurableLink from "../configurable-link/configurable-link";
 
 export default function ReferralsQueue(props: ReferralsQueueProps) {
   const config = useConfig();
@@ -18,53 +20,73 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     return () => sub.unsubscribe();
   }, []);
 
+  console.log(referrals); // eslint-disable-line no-console
+
+  const makePtDashLink = (patientId, patientUuid) => (
+    <ConfigurableLink
+      label={patientId}
+      spa={config.links.patientDash.spa}
+      url={interpolateString(config.links.patientDash.url, {
+        patientId,
+        patientUuid
+      })}
+    />
+  );
+
   return (
-    <div className="omrs-main-content">
-      <div className={styles.greeting}>
-        <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
-      </div>
-      <div>
-        <table>
-          <thead>
-            <tr className="omrs-bold">
-              <td>
-                <Trans i18nKey="emr-id">EMR ID</Trans>
-              </td>
-              <td>
-                <Trans i18nKey="name">Name</Trans>
-              </td>
-              <td>
-                <Trans i18nKey="referral-date">Referral Date</Trans>
-              </td>
-              <td>
-                <Trans i18nKey="referral-type">Referral Type</Trans>
-              </td>
-              <td>
-                <Trans i18nKey="details">Details</Trans>
-              </td>
-              <td>
-                <Trans i18nKey="status">Status</Trans>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            {referrals &&
-              referrals.map((referral, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    <tr>
-                      <td>{referral.zl_emr_id}</td>
-                      <td>{referral.patient_name}</td>
-                      <td>{referral.referral_date}</td>
-                      <td>{referral.referral_type}</td>
-                      <td>{referral.status}</td>
-                      <td>&nbsp;</td>
-                    </tr>
-                  </React.Fragment>
-                );
-              })}
-          </tbody>
-        </table>
+    <div className={`omrs-main-content ${styles.container}`}>
+      <div className="omrs-card omrs-margin-top-32 omrs-padding-16">
+        <div className={styles.greeting}>
+          <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
+        </div>
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              <tr className={`omrs-bold ${styles.tr}`}>
+                <td>
+                  <Trans i18nKey="emr-id">EMR ID</Trans>
+                </td>
+                <td>
+                  <Trans i18nKey="name">Name</Trans>
+                </td>
+                <td>
+                  <Trans i18nKey="referral-date">Referral Date</Trans>
+                </td>
+                <td>
+                  <Trans i18nKey="referral-type">Referral Type</Trans>
+                </td>
+                <td>
+                  <Trans i18nKey="details">Details</Trans>
+                </td>
+                <td>
+                  <Trans i18nKey="status">Status</Trans>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {referrals &&
+                referrals.map((referral, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <tr className={styles.tr}>
+                        <td>
+                          {makePtDashLink(
+                            referral.zl_emr_id,
+                            referral.person_uuid
+                          )}
+                        </td>
+                        <td>{referral.patient_name}</td>
+                        <td>{formatDate(referral.referral_date)}</td>
+                        <td>{referral.referral_type}</td>
+                        <td>{referral.details}</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                    </React.Fragment>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

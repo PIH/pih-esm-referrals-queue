@@ -7,9 +7,14 @@ export const validators = {
   isString: jest.fn()
 };
 
+export const validator = () => {};
+
 export function useConfig() {
   return {
-    displayGreeting: true
+    patientDash: {
+      spa: false,
+      url: "/pt-dash/${patientId}"
+    }
   };
 }
 
