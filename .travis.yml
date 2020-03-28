@@ -7,4 +7,8 @@ node_js:
   - v8
   - v6
   - v4
+script:
+  - yarn lint
+  - yarn test
+  - yarn typescript
 after_script: cat ./coverage/lcov.info | coveralls
