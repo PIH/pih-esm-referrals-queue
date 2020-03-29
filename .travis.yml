@@ -1,14 +1,9 @@
 language: node_js
 node_js:
-  - "10"
-  - v13
-  - v12
-  - v10
-  - v8
-  - v6
-  - v4
+  node
 script:
   - yarn lint
   - yarn test
   - yarn typescript
 after_script: cat ./coverage/lcov.info | coveralls
+

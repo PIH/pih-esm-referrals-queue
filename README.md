@@ -25,11 +25,7 @@ for information about how to provide configuration files.
   - patientDash
     - spa (default: false)
     - url (default: /coreapps/clinicianfacing/patient.page?patientId=${patientUuid}&app=pih.app.clinicianDashboard)
-<<<<<<< HEAD
-<!-- END OF GENERATED -->
-=======
   - visitPage
     - spa (default: false)
     - url (default: /pihcore/visit/visit.page?patient=${patientUuid}&visit=${visitUuid}#/overview)
 <!-- END OF GENERATED -->
->>>>>>> a14395f... Make referral date link
