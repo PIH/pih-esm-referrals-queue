@@ -22,6 +22,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   const filteredReferrals = referrals.filter(
     r => !referralType || r.referral_type == referralType
   );
+  const referralTypes = [...new Set(referrals.map(r => r.referral_type))];
   return (
     <div className={`omrs-main-content ${styles.container}`}>
       <div className="omrs-card omrs-margin-top-32 omrs-padding-16">
@@ -36,7 +37,11 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
               onChange={e => setReferralType(e.target.value)}
             >
               <option value="">Any</option>
-              <option value="Mental Health">Mental Health</option>
+              {referralTypes.map(t => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
             </select>
           </label>
         </div>

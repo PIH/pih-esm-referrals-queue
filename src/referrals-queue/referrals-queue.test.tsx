@@ -16,7 +16,7 @@ const referrals = [
     details: null,
     visit_uuid: "visitaaa-091a-46fd-a442-2a9778d91a52",
     encounter_id: 259719,
-    referral_type: "Tetanus Vaccination",
+    referral_type: "Test Referral Type",
     encounter_uuid: "encounter-0fe1-4318-95a4-641d31745e09"
   },
   {
@@ -109,5 +109,13 @@ describe("referrals queue", () => {
     fireEvent.change(dropdown, { target: { value: "Mental Health" } });
     expect(wrapper.queryByText("PTID2")).not.toBeNull();
     expect(wrapper.queryByText("PTID1")).toBeNull();
+  });
+
+  it("infers list of referral types from data", () => {
+    const dropdown = wrapper.getByLabelText("Referral Type", {
+      selector: "select"
+    });
+    fireEvent.change(dropdown, { target: { value: "Test Referral Type" } });
+    expect(wrapper.queryByDisplayValue("Test Referral Type")).not.toBeNull();
   });
 });
