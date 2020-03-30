@@ -73,16 +73,3 @@ export default function Table(props: TableProps) {
 type TableProps = {
   referrals: Referral[];
 };
-
-type Referral = {
-  details: string;
-  encounter_uuid: string;
-  encounter_id: number;
-  person_uuid: string;
-  patient_name: string;
-  referral_date: string;
-  referral_type: string;
-  status: string;
-  visit_uuid: string;
-  zl_emr_id: string;
-};
