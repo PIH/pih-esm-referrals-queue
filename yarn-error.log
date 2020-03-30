@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js add --dev ts-react-important-stuff
+  /usr/bin/node /usr/share/yarn/bin/yarn.js add @openmrs/config-lib
 
 PATH: 
   /home/brandon/.npm-global/bin:/opt/brandon/android-studio/bin:/home/brandon/.local/share/umake/bin:/home/brandon/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
@@ -14,7 +14,7 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/ts-react-important-stuff: Not found
+  Error: https://registry.yarnpkg.com/@openmrs%2fconfig-lib: Not found
       at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66947:18)
       at Request.self.callback (/usr/share/yarn/lib/cli.js:140665:22)
       at Request.emit (events.js:198:13)
@@ -29,7 +29,7 @@ Trace:
 npm manifest: 
   {
     "name": "@pih/esm-referrals-queue",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "A page for viewing the J9 Home Visits from CommCare",
     "homepage": "https://pihemr.atlassian.net/wiki/spaces/DSS/pages/538116104/PIH+EMR+Referrals+Queue",
     "main": "dist/pih-esm-referrals-queue.js",
@@ -37,7 +37,7 @@ npm manifest:
       "analyze": "webpack --mode=production --env.analyze=true",
       "build": "webpack --mode=production",
       "coverage": "jest --coverage",
-      "lint": "eslint '*/**/*.{js,ts,tsx}'",
+      "lint": "eslint src --ext js,jsx,ts,tsx",
       "prettier": "prettier --write './**'",
       "start": "webpack-dev-server",
       "test": "jest --passWithNoTests",
@@ -81,10 +81,10 @@ npm manifest:
       "concurrently": "^5.1.0",
       "coveralls": "^3.0.7",
       "css-loader": "^3.4.2",
+      "dayjs": "^1.8.23",
       "eslint": "^6.6.0",
       "eslint-config-prettier": "^6.6.0",
       "eslint-config-ts-react-important-stuff": "^2.0.0",
-      "eslint-config-xo": "^0.27.2",
       "eslint-plugin-prettier": "^3.1.1",
       "fork-ts-checker-webpack-plugin": "^1.6.0",
       "husky": "^3.0.9",
@@ -3050,6 +3050,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.11.0.tgz#ec2b44977465b9dcb370021d5e6c019b19f36d06"
     integrity sha512-8P1cDi8ebZyDxUyUprBXwidoEtiQAawYPGvpfb+Dg0G6JrQ+VozwOmm91xYC0vAv1+0VmLehEPb+isg4BGUFfA==
   
+  dayjs@^1.8.23:
+    version "1.8.23"
+    resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.23.tgz#07b5a8e759c4d75ae07bdd0ad6977f851c01e510"
+    integrity sha512-NmYHMFONftoZbeOhVz6jfiXI4zSiPN6NoVWJgC0aZQfYVwzy/ZpESPHuCcI0B8BUMpSJQ08zenHDbofOLKq8hQ==
+  
   debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
     version "2.6.9"
     resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -3470,11 +3475,6 @@ Lockfile:
     integrity sha512-7IdHG92Bih+6WVeTqSku3ZlL5FxOtBhP/U+bej3BdkQKfflMqpVYwSgckZGP6xerxRaDs0yMuNkOmVwRWydszw==
     dependencies:
       eslint-config-react-important-stuff "^2.0.0"
-  
-  eslint-config-xo@^0.27.2:
-    version "0.27.2"
-    resolved "https://registry.yarnpkg.com/eslint-config-xo/-/eslint-config-xo-0.27.2.tgz#71aff3d5b5554e9e5b5e1853e21da7799bb53f1f"
-    integrity sha512-qEuZP0zNQkWpOdNZvWnfY2GNp1AZ33uXgeOXl4DN5YVLHFvekHbeSM2FFZ8A489fp1rCCColVRlJsYMf28o4DA==
   
   eslint-plugin-jsx-a11y@^6.2.3:
     version "6.2.3"

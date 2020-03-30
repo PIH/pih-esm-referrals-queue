@@ -2,6 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "module": "esnext",
+    "target": "esnext",
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "moduleResolution": "node",

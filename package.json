@@ -1,6 +1,6 @@
 {
   "name": "@pih/esm-referrals-queue",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A page for viewing the J9 Home Visits from CommCare",
   "homepage": "https://pihemr.atlassian.net/wiki/spaces/DSS/pages/538116104/PIH+EMR+Referrals+Queue",
   "main": "dist/pih-esm-referrals-queue.js",
@@ -10,6 +10,7 @@
     "coverage": "jest --coverage",
     "lint": "eslint src --ext js,jsx,ts,tsx",
     "prettier": "prettier --write './**'",
+    "autodoc": "config-autodoc",
     "start": "webpack-dev-server",
     "test": "jest --passWithNoTests",
     "typescript": "tsc",
@@ -17,7 +18,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && concurrently 'yarn:lint' 'yarn:test' 'yarn:typescript'"
+      "pre-commit": "pretty-quick --staged && concurrently 'yarn:lint' 'yarn:test' 'yarn:typescript' 'yarn:autodoc' && git add README.md"
     }
   },
   "types": "src/pih-esm-referrals-queue.d.tsx",
@@ -38,6 +39,7 @@
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
     "@babel/preset-typescript": "^7.8.3",
+    "@openmrs/config-cli": "^1.0.0",
     "@openmrs/react-root-decorator": "^3.2.0",
     "@testing-library/jest-dom": "^5.0.2",
     "@testing-library/react": "^9.4.0",
@@ -52,6 +54,7 @@
     "concurrently": "^5.1.0",
     "coveralls": "^3.0.7",
     "css-loader": "^3.4.2",
+    "dayjs": "^1.8.23",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.6.0",
     "eslint-config-ts-react-important-stuff": "^2.0.0",
