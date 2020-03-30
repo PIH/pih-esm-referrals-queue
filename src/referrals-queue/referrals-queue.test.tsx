@@ -65,6 +65,10 @@ describe("referrals queue", () => {
     wrapper = render(<ReferralsQueue />);
   });
 
+  afterEach(() => {
+    global.Date = RealDate;
+  });
+
   it("renders without failing", () => {
     // in beforeEach
   });
