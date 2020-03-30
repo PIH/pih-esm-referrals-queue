@@ -1,8 +1,13 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
+// We use UTC for the present TZ because the dates in the data
+// are all midnight Eastern Time, which lines up with UTC
+// but not with, e.g. Pacific Time.
 export function formatDate(strDate: string) {
-  const date = dayjs(strDate);
-  const today = dayjs(new Date());
+  const date = dayjs.utc(strDate);
+  const today = dayjs.utc(new Date());
   if (
     date.date() === today.date() &&
     date.month() === today.month() &&

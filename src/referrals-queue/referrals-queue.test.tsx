@@ -82,8 +82,8 @@ describe("referrals queue", () => {
         wrapper.getByText(referral.details);
       }
     }
-    wrapper.getByText("24 Mar"); // funny -- due to TZ it shows the day before?
-    wrapper.getByText("22 Mar");
+    wrapper.getByText("25 Mar");
+    wrapper.getByText("23 Mar");
   });
 
   it("navigates to the links", async () => {
@@ -94,7 +94,7 @@ describe("referrals queue", () => {
         "/openmrs/pt-dash/" + referrals[0].person_uuid
       );
     });
-    const pt1VisitLink = wrapper.getByText("22 Mar");
+    const pt1VisitLink = wrapper.getByText("23 Mar");
     fireEvent.click(pt1VisitLink);
     await wait(() => {
       expect(window.location.href).toBe(
