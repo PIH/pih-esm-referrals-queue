@@ -1,9 +1,7 @@
 language: node_js
-node_js:
-  node
+node_js: node
 script:
   - yarn lint
   - yarn test
   - yarn typescript
 after_script: cat ./coverage/lcov.info | coveralls
-
