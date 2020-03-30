@@ -39,8 +39,26 @@ delete window.location;
 window.location = { href: "/referrals-queue" };
 
 describe("referrals queue", () => {
+  const RealDate = Date;
+
+  function mockDate(isoDate) {
+    //@ts-ignore
+    global.Date = class extends RealDate {
+      //@ts-ignore
+      constructor(...args) {
+        if (!args) {
+          return new RealDate(isoDate);
+        } else {
+          //@ts-ignore
+          return new RealDate(...args);
+        }
+      }
+    };
+  }
+
   let wrapper;
   beforeEach(() => {
+    mockDate("2020-04-20T00:00:00.000-0400");
     mockedGetReferrals.mockReset();
     mockedGetReferrals.mockReturnValue(of(referrals));
     //@ts-ignore
