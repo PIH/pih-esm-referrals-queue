@@ -1,6 +1,7 @@
 import React from "react";
-import { createErrorHandler } from "@openmrs/esm-error-handling";
+import dayjs from "dayjs";
 import { Trans } from "react-i18next";
+import { createErrorHandler } from "@openmrs/esm-error-handling";
 import Table from "../table/table.component";
 import styles from "./referrals-queue.css";
 import { getReferrals } from "./referrals-queue.resource";
@@ -8,14 +9,20 @@ import { getReferrals } from "./referrals-queue.resource";
 export default function ReferralsQueue(props: ReferralsQueueProps) {
   const [referrals, setReferrals]: [Referral[], Function] = React.useState([]);
   const [referralType, setReferralType] = React.useState("");
+  const monthAgoString = dayjs()
+    .subtract(1, "month")
+    .format("YYYY-MM-DD");
+  const todayString = dayjs().format("YYYY-MM-DD");
+  const [fromDate, setFromDate] = React.useState(monthAgoString);
+  const [toDate, setToDate] = React.useState(todayString);
 
   React.useEffect(() => {
-    const sub = getReferrals().subscribe(
+    const sub = getReferrals({ fromDate, toDate }).subscribe(
       referrals => setReferrals(referrals),
       createErrorHandler()
     );
     return () => sub.unsubscribe();
-  }, []);
+  }, [fromDate, toDate]);
 
   // console.log(referrals);
 
@@ -30,6 +37,36 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
           <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
         </div>
         <div>
+          <label>
+            From
+            <div className="omrs-datepicker">
+              <input
+                type="date"
+                name="datepicker"
+                value={fromDate}
+                onChange={e => setFromDate(e.target.value)}
+                required
+              />
+              <svg className="omrs-icon" role="img">
+                <use xlinkHref="#omrs-icon-calendar"></use>
+              </svg>
+            </div>
+          </label>
+          <label>
+            To
+            <div className="omrs-datepicker">
+              <input
+                type="date"
+                name="datepicker"
+                value={toDate}
+                onChange={e => setToDate(e.target.value)}
+                required
+              />
+              <svg className="omrs-icon" role="img">
+                <use xlinkHref="#omrs-icon-calendar"></use>
+              </svg>
+            </div>
+          </label>
           <label>
             <Trans i18nKey="referrals-queue">Referral Type</Trans>
             <select

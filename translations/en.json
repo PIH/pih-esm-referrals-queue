@@ -1,9 +1,3 @@
 {
-  "details": "Details",
-  "emr-id": "EMR ID",
-  "name": "Name",
-  "referral-date": "Referral Date",
-  "referral-type": "Referral Type",
-  "referrals-queue": "Referrals Queue",
-  "status": "Status"
+  "referrals-queue": "Referrals Queue"
 }
