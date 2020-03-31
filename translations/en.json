@@ -1,5 +1,12 @@
 {
+  "details": "Details",
+  "emr-id": "EMR ID",
   "from": "From",
+  "hello-from": "Hello from",
+  "name": "Name",
+  "referral-date": "Referral Date",
+  "referral-type": "Referral Type",
   "referrals-queue": "Referrals Queue",
+  "status": "Status",
   "to": "To"
 }
