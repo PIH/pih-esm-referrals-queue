@@ -1,3 +1,5 @@
 {
-  "referrals-queue": "Referrals Queue"
+  "from": "From",
+  "referrals-queue": "Referrals Queue",
+  "to": "To"
 }

@@ -38,7 +38,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
         </div>
         <div>
           <label>
-            From
+            <Trans i18nKey="from">From</Trans>
             <div className="omrs-datepicker">
               <input
                 type="date"
@@ -53,7 +53,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
             </div>
           </label>
           <label>
-            To
+            <Trans i18nKey="to">To</Trans>
             <div className="omrs-datepicker">
               <input
                 type="date"
