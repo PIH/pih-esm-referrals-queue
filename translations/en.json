@@ -1,8 +1,8 @@
 {
   "details": "Details",
   "emr-id": "EMR ID",
+  "filter-by-patient": "Filter by patient",
   "from": "From",
-  "hello-from": "Hello from",
   "name": "Name",
   "referral-date": "Referral Date",
   "referral-type": "Referral Type",

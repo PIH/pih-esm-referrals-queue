@@ -126,12 +126,13 @@ function matchQuery(referral: Referral, query: string): boolean {
 
 function prepareQuery(query: string): RegExp[] {
   return query.split(/\s/).map(token => {
-    const tokenAscii = removeDiacritics(token);
-    return new RegExp("\\b" + tokenAscii, "i");
+    const tokenCleaned = removeDiacritics(token);
+    return new RegExp("\\b" + tokenCleaned, "i");
   });
 }
 
 function removeDiacritics(str: string) {
+  // From https://stackoverflow.com/a/37511463/1464495
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
