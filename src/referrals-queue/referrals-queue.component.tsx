@@ -31,13 +31,13 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     .filter(r => matchQuery(r, ptQuery));
   const referralTypes = [...new Set(referrals.map(r => r.referral_type))];
   return (
-    <div className={`${styles.container}`}>
+    <div className={styles.container}>
       <div className="omrs-card omrs-margin-top-16 omrs-padding-16">
         <div className="omrs-type-title-2">
           <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
         </div>
         <div className={styles.controlsContainer}>
-          <div className={`${styles.inputContainer}`}>
+          <div className={styles.inputContainer}>
             <div className={styles.dateInputContainer}>
               <label htmlFor="from-date">
                 <Trans i18nKey="from">From</Trans>
@@ -75,7 +75,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
               </div>
             </div>
           </div>
-          <div className={`${styles.inputContainer}`}>
+          <div className={styles.inputContainer}>
             <div className="omrs-input-group">
               <label htmlFor="referral-type">
                 <Trans i18nKey="referrals-queue">Referral Type</Trans>
