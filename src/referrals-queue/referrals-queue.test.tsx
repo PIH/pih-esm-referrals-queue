@@ -1,8 +1,9 @@
 import React from "react";
+import { of } from "rxjs";
 import { render, fireEvent, wait, RenderResult } from "@testing-library/react";
+import MockDate from "mockdate";
 import ReferralsQueue from "./referrals-queue.component";
 import { getReferrals } from "./referrals-queue.resource";
-import { of } from "rxjs";
 
 jest.mock("./referrals-queue.resource");
 const mockedGetReferrals = getReferrals as jest.Mock;
@@ -39,33 +40,17 @@ delete window.location;
 window.location = { href: "/referrals-queue" };
 
 describe("referrals queue", () => {
-  const RealDate = Date;
-
-  function mockDate(isoDate) {
-    //@ts-ignore
-    global.Date = class extends RealDate {
-      //@ts-ignore
-      constructor(...args) {
-        if (!args) {
-          return new RealDate(isoDate);
-        } else {
-          //@ts-ignore
-          return new RealDate(...args);
-        }
-      }
-    };
-  }
-
   let wrapper: RenderResult;
+  const todayString = "2020-10-31";
   beforeEach(() => {
-    mockDate("2020-04-20T00:00:00.000-0400");
+    MockDate.set(todayString + "T10:00:00.000-0400");
     mockedGetReferrals.mockReset();
     mockedGetReferrals.mockReturnValue(of(referrals));
     wrapper = render(<ReferralsQueue />);
   });
 
   afterEach(() => {
-    global.Date = RealDate;
+    MockDate.reset();
   });
 
   it("renders without failing", () => {
@@ -118,4 +103,26 @@ describe("referrals queue", () => {
     fireEvent.change(dropdown, { target: { value: "Test Referral Type" } });
     expect(wrapper.queryByDisplayValue("Test Referral Type")).not.toBeNull();
   });
+
+  it("calls getReferrals with the correct date arguments", () => {
+    const monthAgoString = "2020-09-30";
+    expect(mockedGetReferrals).lastCalledWith({
+      fromDate: monthAgoString,
+      toDate: todayString
+    });
+    const fromDateInput = wrapper.getByLabelText("From");
+    fireEvent.change(fromDateInput, { target: { value: "2020-01-01" } });
+    expect(mockedGetReferrals).lastCalledWith({
+      fromDate: "2020-01-01",
+      toDate: todayString
+    });
+    const toDateInput = wrapper.getByLabelText("To");
+    fireEvent.change(toDateInput, { target: { value: "2020-03-01" } });
+    expect(mockedGetReferrals).lastCalledWith({
+      fromDate: "2020-01-01",
+      toDate: "2020-03-01"
+    });
+  });
+
+  test.todo("makes the API call with the locale from the user session");
 });
