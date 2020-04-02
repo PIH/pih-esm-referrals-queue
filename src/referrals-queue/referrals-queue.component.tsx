@@ -1,12 +1,13 @@
 import React from "react";
 import dayjs from "dayjs";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { createErrorHandler } from "@openmrs/esm-error-handling";
 import Table from "../table/table.component";
 import styles from "./referrals-queue.css";
 import { getReferrals } from "./referrals-queue.resource";
 
 export default function ReferralsQueue(props: ReferralsQueueProps) {
+  const { t } = useTranslation();
   const [referrals, setReferrals]: [Referral[], Function] = React.useState([]);
   const [referralType, setReferralType] = React.useState("");
   const monthAgoString = dayjs()
@@ -76,11 +77,15 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
             </div>
           </div>
           <div className={`${styles.inputContainer}`}>
-            <label>
-              <Trans i18nKey="referrals-queue">Referral Type</Trans>
+            <div className="omrs-input-group">
+              <label htmlFor="referral-type">
+                <Trans i18nKey="referrals-queue">Referral Type</Trans>
+              </label>
               <select
+                id="referral-type"
                 value={referralType}
                 onChange={e => setReferralType(e.target.value)}
+                className={styles.dropdown}
               >
                 <option value="">Any</option>
                 {referralTypes.map(t => (
@@ -89,10 +94,13 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                   </option>
                 ))}
               </select>
-            </label>
+            </div>
           </div>
           <div className={styles.inputContainer}>
             <div className="omrs-input-group">
+              <label htmlFor="query-input">
+                <Trans i18nKey="filter-by-patient">Filter by patient</Trans>
+              </label>
               <input
                 id="query-input"
                 type="text"
@@ -100,9 +108,6 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 onChange={e => setPtQuery(e.target.value)}
                 className="omrs-input-outlined"
               />
-              <label htmlFor="query-input">
-                <Trans i18nKey="filter-by-patient">Filter by patient</Trans>
-              </label>
             </div>
           </div>
         </div>
