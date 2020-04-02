@@ -124,5 +124,26 @@ describe("referrals queue", () => {
     });
   });
 
+  it("filters the list of results by patient name query", () => {
+    const queryBox = wrapper.getByLabelText("Filter by patient");
+    fireEvent.change(queryBox, { target: { value: "Mother" } });
+    expect(wrapper.queryByText("PTID2")).not.toBeNull();
+    expect(wrapper.queryByText("PTID1")).toBeNull();
+  });
+
+  it("filters the list of results by patient name partial token matches", () => {
+    const queryBox = wrapper.getByLabelText("Filter by patient");
+    fireEvent.change(queryBox, { target: { value: "dav mo" } });
+    expect(wrapper.queryByText("PTID2")).not.toBeNull();
+    expect(wrapper.queryByText("PTID1")).toBeNull();
+  });
+
+  it("filters the list of results by patient id", () => {
+    const queryBox = wrapper.getByLabelText("Filter by patient");
+    fireEvent.change(queryBox, { target: { value: "ptid1" } });
+    expect(wrapper.queryByText("PTID1")).not.toBeNull();
+    expect(wrapper.queryByText("PTID2")).toBeNull();
+  });
+
   test.todo("makes the API call with the locale from the user session");
 });

@@ -15,6 +15,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   const todayString = dayjs().format("YYYY-MM-DD");
   const [fromDate, setFromDate] = React.useState(monthAgoString);
   const [toDate, setToDate] = React.useState(todayString);
+  const [ptQuery, setPtQuery] = React.useState("");
 
   React.useEffect(() => {
     const sub = getReferrals({ fromDate, toDate }).subscribe(
@@ -25,10 +26,9 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   }, [fromDate, toDate]);
 
   // console.log(referrals);
-
-  const filteredReferrals = referrals.filter(
-    r => !referralType || r.referral_type == referralType
-  );
+  const filteredReferrals = referrals
+    .filter(r => !referralType || r.referral_type == referralType)
+    .filter(r => matchQuery(r, ptQuery));
   const referralTypes = [...new Set(referrals.map(r => r.referral_type))];
   return (
     <div className={`omrs-main-content ${styles.container}`}>
@@ -37,50 +37,68 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
           <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
         </div>
         <div>
-          <label>
-            <Trans i18nKey="from">From</Trans>
-            <div className="omrs-datepicker">
-              <input
-                type="date"
-                name="datepicker"
-                value={fromDate}
-                onChange={e => setFromDate(e.target.value)}
-                required
-              />
-              <svg className="omrs-icon" role="img">
-                <use xlinkHref="#omrs-icon-calendar"></use>
-              </svg>
-            </div>
-          </label>
-          <label>
-            <Trans i18nKey="to">To</Trans>
-            <div className="omrs-datepicker">
-              <input
-                type="date"
-                name="datepicker"
-                value={toDate}
-                onChange={e => setToDate(e.target.value)}
-                required
-              />
-              <svg className="omrs-icon" role="img">
-                <use xlinkHref="#omrs-icon-calendar"></use>
-              </svg>
-            </div>
-          </label>
-          <label>
-            <Trans i18nKey="referrals-queue">Referral Type</Trans>
-            <select
-              value={referralType}
-              onChange={e => setReferralType(e.target.value)}
-            >
-              <option value="">Any</option>
-              {referralTypes.map(t => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="omrs-input-group">
+            <label>
+              <Trans i18nKey="from">From</Trans>
+              <div className="omrs-datepicker">
+                <input
+                  type="date"
+                  name="datepicker"
+                  value={fromDate}
+                  onChange={e => setFromDate(e.target.value)}
+                  required
+                />
+                <svg className="omrs-icon" role="img">
+                  <use xlinkHref="#omrs-icon-calendar"></use>
+                </svg>
+              </div>
+            </label>
+          </div>
+          <div className="omrs-input-group">
+            <label>
+              <Trans i18nKey="to">To</Trans>
+              <div className="omrs-datepicker">
+                <input
+                  type="date"
+                  name="datepicker"
+                  value={toDate}
+                  onChange={e => setToDate(e.target.value)}
+                  required
+                />
+                <svg className="omrs-icon" role="img">
+                  <use xlinkHref="#omrs-icon-calendar"></use>
+                </svg>
+              </div>
+            </label>
+          </div>
+          <div className="omrs-input-group">
+            <input
+              id="query-input"
+              type="text"
+              value={ptQuery}
+              onChange={e => setPtQuery(e.target.value)}
+              className="omrs-input-outlined"
+            />
+            <label htmlFor="query-input">
+              <Trans i18nKey="filter-by-patient">Filter by patient</Trans>
+            </label>
+          </div>
+          <div className="omrs-input-group">
+            <label>
+              <Trans i18nKey="referrals-queue">Referral Type</Trans>
+              <select
+                value={referralType}
+                onChange={e => setReferralType(e.target.value)}
+              >
+                <option value="">Any</option>
+                {referralTypes.map(t => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </div>
         <div className={styles.tableContainer}>
           <Table referrals={filteredReferrals} />
@@ -88,6 +106,28 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
       </div>
     </div>
   );
+}
+
+function matchQuery(referral: Referral, query: string): boolean {
+  return (
+    !query ||
+    prepareQuery(query).every(regexp =>
+      regexp.test(removeDiacritics(referral.patient_name))
+    ) ||
+    new RegExp(query, "i").test(referral.zl_emr_id)
+  );
+}
+
+function prepareQuery(query: string): RegExp[] {
+  return query.split(/\s/).map(token => {
+    const tokenCleaned = removeDiacritics(token);
+    return new RegExp("\\b" + tokenCleaned, "i");
+  });
+}
+
+function removeDiacritics(str: string) {
+  // From https://stackoverflow.com/a/37511463/1464495
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 type ReferralsQueueProps = {};
