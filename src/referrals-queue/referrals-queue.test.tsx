@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, wait } from "@testing-library/react";
+import { render, fireEvent, wait, RenderResult } from "@testing-library/react";
 import ReferralsQueue from "./referrals-queue.component";
 import { getReferrals } from "./referrals-queue.resource";
 import { of } from "rxjs";
@@ -16,7 +16,7 @@ const referrals = [
     details: null,
     visit_uuid: "visitaaa-091a-46fd-a442-2a9778d91a52",
     encounter_id: 259719,
-    referral_type: "Tetanus Vaccination",
+    referral_type: "Test Referral Type",
     encounter_uuid: "encounter-0fe1-4318-95a4-641d31745e09"
   },
   {
@@ -56,12 +56,11 @@ describe("referrals queue", () => {
     };
   }
 
-  let wrapper;
+  let wrapper: RenderResult;
   beforeEach(() => {
     mockDate("2020-04-20T00:00:00.000-0400");
     mockedGetReferrals.mockReset();
     mockedGetReferrals.mockReturnValue(of(referrals));
-    //@ts-ignore
     wrapper = render(<ReferralsQueue />);
   });
 
@@ -77,7 +76,7 @@ describe("referrals queue", () => {
     for (let referral of referrals) {
       wrapper.getByText(referral.zl_emr_id);
       wrapper.getByText(referral.patient_name);
-      wrapper.getByText(referral.referral_type);
+      wrapper.getByText(referral.referral_type, { selector: "td" });
       if (referral.details) {
         wrapper.getByText(referral.details);
       }
@@ -101,5 +100,22 @@ describe("referrals queue", () => {
         `/openmrs/visit/${referrals[1].person_uuid}/${referrals[1].visit_uuid}`
       );
     });
+  });
+
+  it("filters by referral type", () => {
+    const dropdown = wrapper.getByLabelText("Referral Type", {
+      selector: "select"
+    });
+    fireEvent.change(dropdown, { target: { value: "Mental Health" } });
+    expect(wrapper.queryByText("PTID2")).not.toBeNull();
+    expect(wrapper.queryByText("PTID1")).toBeNull();
+  });
+
+  it("infers list of referral types from data", () => {
+    const dropdown = wrapper.getByLabelText("Referral Type", {
+      selector: "select"
+    });
+    fireEvent.change(dropdown, { target: { value: "Test Referral Type" } });
+    expect(wrapper.queryByDisplayValue("Test Referral Type")).not.toBeNull();
   });
 });
