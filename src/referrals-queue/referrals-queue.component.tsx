@@ -1,6 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { createErrorHandler } from "@openmrs/esm-error-handling";
 import Table from "../table/table.component";
 import styles from "./referrals-queue.css";
@@ -31,17 +31,20 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     .filter(r => matchQuery(r, ptQuery));
   const referralTypes = [...new Set(referrals.map(r => r.referral_type))];
   return (
-    <div className={`omrs-main-content ${styles.container}`}>
-      <div className="omrs-card omrs-margin-top-32 omrs-padding-16">
-        <div className={styles.greeting}>
+    <div className={styles.container}>
+      <div className="omrs-card omrs-margin-top-16 omrs-padding-16">
+        <div className="omrs-type-title-2">
           <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
         </div>
-        <div>
-          <div className="omrs-input-group">
-            <label>
-              <Trans i18nKey="from">From</Trans>
+        <div className={styles.controlsContainer}>
+          <div className={styles.inputContainer}>
+            <div className={styles.dateInputContainer}>
+              <label htmlFor="from-date">
+                <Trans i18nKey="from">From</Trans>
+              </label>
               <div className="omrs-datepicker">
                 <input
+                  id="from-date"
                   type="date"
                   name="datepicker"
                   value={fromDate}
@@ -52,13 +55,14 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                   <use xlinkHref="#omrs-icon-calendar"></use>
                 </svg>
               </div>
-            </label>
-          </div>
-          <div className="omrs-input-group">
-            <label>
-              <Trans i18nKey="to">To</Trans>
+            </div>
+            <div className={styles.dateInputContainer}>
+              <label htmlFor="to-date">
+                <Trans i18nKey="to">To</Trans>
+              </label>
               <div className="omrs-datepicker">
                 <input
+                  id="to-date"
                   type="date"
                   name="datepicker"
                   value={toDate}
@@ -69,26 +73,18 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                   <use xlinkHref="#omrs-icon-calendar"></use>
                 </svg>
               </div>
-            </label>
+            </div>
           </div>
-          <div className="omrs-input-group">
-            <input
-              id="query-input"
-              type="text"
-              value={ptQuery}
-              onChange={e => setPtQuery(e.target.value)}
-              className="omrs-input-outlined"
-            />
-            <label htmlFor="query-input">
-              <Trans i18nKey="filter-by-patient">Filter by patient</Trans>
-            </label>
-          </div>
-          <div className="omrs-input-group">
-            <label>
-              <Trans i18nKey="referrals-queue">Referral Type</Trans>
+          <div className={styles.inputContainer}>
+            <div className="omrs-input-group">
+              <label htmlFor="referral-type">
+                <Trans i18nKey="referrals-queue">Referral Type</Trans>
+              </label>
               <select
+                id="referral-type"
                 value={referralType}
                 onChange={e => setReferralType(e.target.value)}
+                className={styles.dropdown}
               >
                 <option value="">Any</option>
                 {referralTypes.map(t => (
@@ -97,7 +93,21 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                   </option>
                 ))}
               </select>
-            </label>
+            </div>
+          </div>
+          <div className={styles.inputContainer}>
+            <div className="omrs-input-group">
+              <label htmlFor="query-input">
+                <Trans i18nKey="filter-by-patient">Filter by patient</Trans>
+              </label>
+              <input
+                id="query-input"
+                type="text"
+                value={ptQuery}
+                onChange={e => setPtQuery(e.target.value)}
+                className="omrs-input-outlined"
+              />
+            </div>
           </div>
         </div>
         <div className={styles.tableContainer}>

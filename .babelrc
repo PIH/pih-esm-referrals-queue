@@ -7,13 +7,6 @@
   "plugins": [
     "@babel/plugin-proposal-class-properties",
     [
-      "i18next-extract",
-      {
-        "outputPath": "translations/{{locale}}.json",
-        "discardOldKeys": true
-      }
-    ],
-    [
       "@babel/plugin-transform-runtime",
       {
         "useESModules": true,
