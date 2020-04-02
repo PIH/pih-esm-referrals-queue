@@ -7,7 +7,6 @@ import styles from "./referrals-queue.css";
 import { getReferrals } from "./referrals-queue.resource";
 
 export default function ReferralsQueue(props: ReferralsQueueProps) {
-  const { t } = useTranslation();
   const [referrals, setReferrals]: [Referral[], Function] = React.useState([]);
   const [referralType, setReferralType] = React.useState("");
   const monthAgoString = dayjs()
@@ -32,8 +31,8 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     .filter(r => matchQuery(r, ptQuery));
   const referralTypes = [...new Set(referrals.map(r => r.referral_type))];
   return (
-    <div className={`omrs-main-content ${styles.container}`}>
-      <div className="omrs-card omrs-margin-top-32 omrs-padding-16">
+    <div className={`${styles.container}`}>
+      <div className="omrs-card omrs-margin-top-16 omrs-padding-16">
         <div className="omrs-type-title-2">
           <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
         </div>

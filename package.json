@@ -18,7 +18,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && concurrently 'yarn:lint' 'yarn:test' 'yarn:typescript' 'yarn:autodoc' && git add README.md"
+      "pre-commit": "pretty-quick --staged && concurrently 'yarn:lint' 'yarn:test' 'yarn:typescript'"
     }
   },
   "types": "src/pih-esm-referrals-queue.d.tsx",

@@ -7,6 +7,7 @@ import {
 } from "@openmrs/esm-module-config";
 import { BrowserRouter, Route } from "react-router-dom";
 import ReferralsQueue from "./referrals-queue/referrals-queue.component";
+import styles from "./root.css";
 
 const validateUrlTemplate = validator(
   s => !s.includes("`"),
@@ -42,9 +43,11 @@ defineConfigSchema("@pih/esm-referrals-queue", {
 
 function Root(props) {
   return (
-    <BrowserRouter basename={window["getOpenmrsSpaBase"]()}>
-      <Route path="/referrals-queue" component={ReferralsQueue} />
-    </BrowserRouter>
+    <div className={`omrs-main-content ${styles.overflowAuto}`}>
+      <BrowserRouter basename={window["getOpenmrsSpaBase"]()}>
+        <Route path="/referrals-queue" component={ReferralsQueue} />
+      </BrowserRouter>
+    </div>
   );
 }
 export default openmrsRootDecorator({
