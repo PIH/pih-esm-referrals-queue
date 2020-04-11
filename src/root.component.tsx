@@ -34,7 +34,7 @@ defineConfigSchema("@pih/esm-referrals-queue", {
       },
       url: {
         default:
-          "/pihcore/visit/visit.page?patient=${patientUuid}&visit=${visitUuid}#/overview",
+          "/pihcore/visit/visit.page?patient=${patientUuid}&visit=${visitUuid}&suppressActions=true#/overview",
         validators: [validators.isString, validateUrlTemplate]
       }
     }

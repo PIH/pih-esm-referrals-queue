@@ -43,7 +43,7 @@ export default function Table(props: TableProps) {
                       label={referral.zl_emr_id}
                       spa={config.links.patientDash.spa}
                       url={interpolateString(config.links.patientDash.url, {
-                        patientUuid: referral.person_uuid
+                        patientUuid: referral.patient_uuid
                       })}
                     />
                   </td>
@@ -53,7 +53,7 @@ export default function Table(props: TableProps) {
                       label={formatDate(referral.referral_date)}
                       spa={config.links.visitPage.spa}
                       url={interpolateString(config.links.visitPage.url, {
-                        patientUuid: referral.person_uuid,
+                        patientUuid: referral.patient_uuid,
                         visitUuid: referral.visit_uuid
                       })}
                     />

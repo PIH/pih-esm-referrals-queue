@@ -8,7 +8,7 @@ type Referral = {
   details: string;
   encounter_uuid: string;
   encounter_id: number;
-  person_uuid: string;
+  patient_uuid: string;
   patient_name: string;
   referral_date: string;
   referral_type: string;
