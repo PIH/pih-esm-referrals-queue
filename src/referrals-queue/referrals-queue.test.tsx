@@ -110,13 +110,13 @@ describe("referrals queue", () => {
       fromDate: monthAgoString,
       toDate: todayString
     });
-    const fromDateInput = wrapper.getByLabelText("From");
+    const fromDateInput = wrapper.getByRole("textbox", { name: "Start Date" });
     fireEvent.change(fromDateInput, { target: { value: "2020-01-01" } });
     expect(mockedGetReferrals).lastCalledWith({
       fromDate: "2020-01-01",
       toDate: todayString
     });
-    const toDateInput = wrapper.getByLabelText("To");
+    const toDateInput = wrapper.getByRole("textbox", { name: "End Date" });
     fireEvent.change(toDateInput, { target: { value: "2020-03-01" } });
     expect(mockedGetReferrals).lastCalledWith({
       fromDate: "2020-01-01",
