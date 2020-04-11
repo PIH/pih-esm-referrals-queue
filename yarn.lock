@@ -1306,6 +1306,14 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
+"@types/react-dates@^17.1.10":
+  version "17.1.10"
+  resolved "https://registry.yarnpkg.com/@types/react-dates/-/react-dates-17.1.10.tgz#e85cafa41b16762ef386a1b30fc0928bccebd616"
+  integrity sha512-vMMO4bw88PJ5yLfeo1WR0peR7hkYIsso1wGLiO5Xkpcb/B86LK2P1l3YbNWXD1M7BqFekezkuWaO1qKGf8uX4Q==
+  dependencies:
+    "@types/react" "*"
+    moment ">=2.17.1"
+
 "@types/react-dom@*", "@types/react-dom@^16.9.5":
   version "16.9.5"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.5.tgz#5de610b04a35d07ffd8f44edad93a71032d9aaa7"
@@ -6118,7 +6126,7 @@ mockdate@^2.0.5:
   resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-2.0.5.tgz#70c6abf9ed4b2dae65c81dfc170dd1a5cec53620"
   integrity sha512-ST0PnThzWKcgSLyc+ugLVql45PvESt3Ul/wrdV/OPc/6Pr8dbLAIJsN1cIp41FLzbN+srVTNIRn+5Cju0nyV6A==
 
-moment@*, moment@>=1.6.0, moment@^2.24.0:
+moment@*, moment@>=1.6.0, moment@>=2.17.1, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==

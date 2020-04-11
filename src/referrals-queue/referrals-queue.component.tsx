@@ -1,4 +1,5 @@
 import React from "react";
+import i18n from "i18next";
 import { Trans } from "react-i18next";
 import "react-dates/initialize";
 import { DateRangePicker } from "react-dates";
@@ -8,8 +9,7 @@ import Table from "../table/table.component";
 import styles from "./referrals-queue.css";
 import { getReferrals } from "./referrals-queue.resource";
 
-// @bistenes: I guess we have to override the webpack css loader config
-//   in order to load the react-dates styles.
+// Override the webpack CSS loader config in order to load react-dates styles.
 //   See thread: https://github.com/webpack-contrib/css-loader/issues/295
 import "!style-loader!css-loader!react-dates/lib/css/_datepicker.css";
 
@@ -22,11 +22,16 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   const [ptQuery, setPtQuery] = React.useState("");
   const [focusedDateInput, setFocusedDateInput] = React.useState(null);
 
+  const getLocale = () =>
+    i18n.language || window.localStorage.i18nextLng || "en";
+  moment.locale(getLocale());
+
   React.useEffect(() => {
     if (fromDate && toDate) {
       const sub = getReferrals({
         fromDate: fromDate.format("YYYY-MM-DD"),
-        toDate: toDate.format("YYYY-MM-DD")
+        toDate: toDate.format("YYYY-MM-DD"),
+        locale: getLocale()
       }).subscribe(referrals => setReferrals(referrals), createErrorHandler());
       return () => sub.unsubscribe();
     }
@@ -49,7 +54,6 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
               <label htmlFor="from-date">
                 <Trans i18nKey="from">Filter by date</Trans>
               </label>
-              {/* <DatePicker selected={fromDate} onChange={date => setFromDate(date)} /> */}
               <DateRangePicker
                 startDate={fromDate}
                 startDateId="from_date"
@@ -62,6 +66,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 focusedInput={focusedDateInput}
                 onFocusChange={i => setFocusedDateInput(i)}
                 isOutsideRange={(date: Moment) => date.isAfter(today)}
+                displayFormat="YYYY MMM DD"
               />
             </div>
           </div>

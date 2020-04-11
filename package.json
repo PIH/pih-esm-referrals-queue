@@ -45,6 +45,7 @@
     "@testing-library/react": "^9.4.0",
     "@types/jest": "^24.9.1",
     "@types/moment": "^2.13.0",
+    "@types/react-dates": "^17.1.10",
     "@typescript-eslint/parser": "^2.18.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
