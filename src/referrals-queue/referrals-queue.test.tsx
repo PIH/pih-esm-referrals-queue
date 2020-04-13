@@ -10,7 +10,7 @@ const mockedGetReferrals = getReferrals as jest.Mock;
 
 const referrals = [
   {
-    person_uuid: "ptaaaaaa-2869-41a4-86af-811fa2ee65b8",
+    patient_uuid: "ptaaaaaa-2869-41a4-86af-811fa2ee65b8",
     zl_emr_id: "PTID1",
     patient_name: "Patient Commcare",
     referral_date: "2020-03-25T00:00:00.000-0400",
@@ -21,7 +21,7 @@ const referrals = [
     encounter_uuid: "encounter-0fe1-4318-95a4-641d31745e09"
   },
   {
-    person_uuid: "ptbbbbbb-de0e-489f-b4c7-fe4579e07aa9",
+    patient_uuid: "ptbbbbbb-de0e-489f-b4c7-fe4579e07aa9",
     zl_emr_id: "PTID2",
     patient_name: "Davina Mother",
     referral_date: "2020-03-23T00:00:00.000-0400",
@@ -75,14 +75,14 @@ describe("referrals queue", () => {
     fireEvent.click(pt0DashLink);
     await wait(() => {
       expect(window.location.href).toBe(
-        "/openmrs/pt-dash/" + referrals[0].person_uuid
+        "/openmrs/pt-dash/" + referrals[0].patient_uuid
       );
     });
     const pt1VisitLink = wrapper.getByText("23 Mar");
     fireEvent.click(pt1VisitLink);
     await wait(() => {
       expect(window.location.href).toBe(
-        `/openmrs/visit/${referrals[1].person_uuid}/${referrals[1].visit_uuid}`
+        `/openmrs/visit/${referrals[1].patient_uuid}/${referrals[1].visit_uuid}`
       );
     });
   });
