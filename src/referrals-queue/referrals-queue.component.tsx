@@ -1,28 +1,40 @@
 import React from "react";
-import dayjs from "dayjs";
-import { Trans, useTranslation } from "react-i18next";
+import i18n from "i18next";
+import { Trans } from "react-i18next";
+import "react-dates/initialize";
+import { DateRangePicker } from "react-dates";
+import moment, { Moment } from "moment";
 import { createErrorHandler } from "@openmrs/esm-error-handling";
 import Table from "../table/table.component";
 import styles from "./referrals-queue.css";
 import { getReferrals } from "./referrals-queue.resource";
 
+// Override the webpack CSS loader config in order to load react-dates styles.
+//   See thread: https://github.com/webpack-contrib/css-loader/issues/295
+import "!style-loader!css-loader!react-dates/lib/css/_datepicker.css";
+
 export default function ReferralsQueue(props: ReferralsQueueProps) {
   const [referrals, setReferrals]: [Referral[], Function] = React.useState([]);
   const [referralType, setReferralType] = React.useState("");
-  const monthAgoString = dayjs()
-    .subtract(1, "month")
-    .format("YYYY-MM-DD");
-  const todayString = dayjs().format("YYYY-MM-DD");
-  const [fromDate, setFromDate] = React.useState(monthAgoString);
-  const [toDate, setToDate] = React.useState(todayString);
+  const today = moment();
+  const [fromDate, setFromDate] = React.useState(moment().subtract(1, "month"));
+  const [toDate, setToDate] = React.useState(today);
   const [ptQuery, setPtQuery] = React.useState("");
+  const [focusedDateInput, setFocusedDateInput] = React.useState(null);
+
+  const getLocale = () =>
+    i18n.language || window.localStorage.i18nextLng || "en";
+  moment.locale(getLocale());
 
   React.useEffect(() => {
-    const sub = getReferrals({ fromDate, toDate }).subscribe(
-      referrals => setReferrals(referrals),
-      createErrorHandler()
-    );
-    return () => sub.unsubscribe();
+    if (fromDate && toDate) {
+      const sub = getReferrals({
+        fromDate: fromDate.format("YYYY-MM-DD"),
+        toDate: toDate.format("YYYY-MM-DD"),
+        locale: getLocale()
+      }).subscribe(referrals => setReferrals(referrals), createErrorHandler());
+      return () => sub.unsubscribe();
+    }
   }, [fromDate, toDate]);
 
   // console.log(referrals);
@@ -40,39 +52,22 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
           <div className={styles.inputContainer}>
             <div className={styles.dateInputContainer}>
               <label htmlFor="from-date">
-                <Trans i18nKey="from">From</Trans>
+                <Trans i18nKey="from">Filter by date</Trans>
               </label>
-              <div className="omrs-datepicker">
-                <input
-                  id="from-date"
-                  type="date"
-                  name="datepicker"
-                  value={fromDate}
-                  onChange={e => setFromDate(e.target.value)}
-                  required
-                />
-                <svg className="omrs-icon" role="img">
-                  <use xlinkHref="#omrs-icon-calendar"></use>
-                </svg>
-              </div>
-            </div>
-            <div className={styles.dateInputContainer}>
-              <label htmlFor="to-date">
-                <Trans i18nKey="to">To</Trans>
-              </label>
-              <div className="omrs-datepicker">
-                <input
-                  id="to-date"
-                  type="date"
-                  name="datepicker"
-                  value={toDate}
-                  onChange={e => setToDate(e.target.value)}
-                  required
-                />
-                <svg className="omrs-icon" role="img">
-                  <use xlinkHref="#omrs-icon-calendar"></use>
-                </svg>
-              </div>
+              <DateRangePicker
+                startDate={fromDate}
+                startDateId="from_date"
+                endDate={toDate}
+                endDateId="to_date"
+                onDatesChange={({ startDate, endDate }) => {
+                  setFromDate(startDate);
+                  setToDate(endDate);
+                }}
+                focusedInput={focusedDateInput}
+                onFocusChange={i => setFocusedDateInput(i)}
+                isOutsideRange={(date: Moment) => date.isAfter(today)}
+                displayFormat="YYYY MMM DD"
+              />
             </div>
           </div>
           <div className={styles.inputContainer}>
