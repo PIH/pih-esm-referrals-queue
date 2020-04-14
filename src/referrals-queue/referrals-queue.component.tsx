@@ -63,7 +63,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 focused={fromDateFocused}
                 onFocusChange={({ focused }) => setFromDateFocused(focused)}
                 isOutsideRange={(date: Moment) => date.isAfter(today)}
-                displayFormat="YYYY MMM DD"
+                displayFormat="DD MMM YYYY"
                 numberOfMonths={1}
               />
             </div>
@@ -78,7 +78,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 focused={toDateFocused}
                 onFocusChange={({ focused }) => setToDateFocused(focused)}
                 isOutsideRange={(date: Moment) => date.isAfter(today)}
-                displayFormat="YYYY MMM DD"
+                displayFormat="DD MMM YYYY"
                 numberOfMonths={1}
               />
             </div>
