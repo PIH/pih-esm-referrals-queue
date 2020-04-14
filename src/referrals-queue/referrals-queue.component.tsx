@@ -2,7 +2,7 @@ import React from "react";
 import i18n from "i18next";
 import { Trans } from "react-i18next";
 import "react-dates/initialize";
-import { DateRangePicker } from "react-dates";
+import { SingleDatePicker } from "react-dates";
 import moment, { Moment } from "moment";
 import { createErrorHandler } from "@openmrs/esm-error-handling";
 import Table from "../table/table.component";
@@ -21,7 +21,8 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   const [fromDate, setFromDate] = React.useState(moment().subtract(1, "month"));
   const [toDate, setToDate] = React.useState(today);
   const [ptQuery, setPtQuery] = React.useState("");
-  const [focusedDateInput, setFocusedDateInput] = React.useState(null);
+  const [fromDateFocused, setFromDateFocused] = React.useState(false);
+  const [toDateFocused, setToDateFocused] = React.useState(false);
 
   const getLocale = () =>
     i18n.language || window.localStorage.i18nextLng || "en";
@@ -53,21 +54,32 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
           <div className={styles.inputContainer}>
             <div className={styles.dateInputContainer}>
               <label htmlFor="from-date">
-                <Trans i18nKey="from">Filter by date</Trans>
+                <Trans i18nKey="from">From</Trans>
               </label>
-              <DateRangePicker
-                startDate={fromDate}
-                startDateId="from_date"
-                endDate={toDate}
-                endDateId="to_date"
-                onDatesChange={({ startDate, endDate }) => {
-                  setFromDate(startDate);
-                  setToDate(endDate);
-                }}
-                focusedInput={focusedDateInput}
-                onFocusChange={i => setFocusedDateInput(i)}
+              <SingleDatePicker
+                id="from-date"
+                date={fromDate}
+                onDateChange={date => setFromDate(date)}
+                focused={fromDateFocused}
+                onFocusChange={({ focused }) => setFromDateFocused(focused)}
                 isOutsideRange={(date: Moment) => date.isAfter(today)}
                 displayFormat="YYYY MMM DD"
+                numberOfMonths={1}
+              />
+            </div>
+            <div className={styles.dateInputContainer}>
+              <label htmlFor="to-date">
+                <Trans i18nKey="to">To</Trans>
+              </label>
+              <SingleDatePicker
+                id="to-date"
+                date={toDate}
+                onDateChange={date => setToDate(date)}
+                focused={toDateFocused}
+                onFocusChange={({ focused }) => setToDateFocused(focused)}
+                isOutsideRange={(date: Moment) => date.isAfter(today)}
+                displayFormat="YYYY MMM DD"
+                numberOfMonths={1}
               />
             </div>
           </div>
