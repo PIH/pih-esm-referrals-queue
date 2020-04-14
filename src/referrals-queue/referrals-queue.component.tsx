@@ -48,7 +48,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     <div className={styles.container}>
       <div className="omrs-card omrs-margin-top-16 omrs-padding-16">
         <div className="omrs-type-title-2">
-          <Trans i18nKey="referrals-queue">Referrals Queue</Trans>
+          <Trans i18nKey="referrals-queue">Referrals Queueee</Trans>
         </div>
         <div className={styles.controlsContainer}>
           <div className={styles.inputContainer}>
