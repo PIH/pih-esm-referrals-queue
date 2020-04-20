@@ -16,7 +16,8 @@ import "!style-loader!css-loader!./react-dates-overrides.css";
 
 export default function ReferralsQueue(props: ReferralsQueueProps) {
   const [referrals, setReferrals]: [Referral[], Function] = React.useState([]);
-  const [referralType, setReferralType] = React.useState("");
+  const [referralTypeFilter, setReferralTypeFilter] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState("");
   const today = moment();
   const [fromDate, setFromDate] = React.useState(moment().subtract(1, "month"));
   const [toDate, setToDate] = React.useState(today);
@@ -41,9 +42,13 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
 
   //console.log(referrals);
   const filteredReferrals = referrals
-    .filter(r => !referralType || r.referral_type == referralType)
+    .filter(r => !referralTypeFilter || r.referral_type == referralTypeFilter)
+    .filter(r => !statusFilter || r.fulfillment_status == statusFilter)
     .filter(r => matchQuery(r, ptQuery));
   const referralTypes = [...new Set(referrals.map(r => r.referral_type))];
+  const statuses = [
+    ...new Set(referrals.map(r => r.fulfillment_status).filter(r => r != null))
+  ];
   return (
     <div className={styles.container}>
       <div className="omrs-card omrs-margin-top-16 omrs-padding-16">
@@ -86,12 +91,12 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
           <div className={styles.inputContainer}>
             <div className="omrs-input-group">
               <label htmlFor="referral-type">
-                <Trans i18nKey="referrals-queue">Referral Type</Trans>
+                <Trans i18nKey="referral-type">Referral Type</Trans>
               </label>
               <select
                 id="referral-type"
-                value={referralType}
-                onChange={e => setReferralType(e.target.value)}
+                value={referralTypeFilter}
+                onChange={e => setReferralTypeFilter(e.target.value)}
                 className={styles.dropdown}
               >
                 <option value="">Any</option>
@@ -115,6 +120,26 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 onChange={e => setPtQuery(e.target.value)}
                 className="omrs-input-outlined"
               />
+            </div>
+          </div>
+          <div className={styles.inputContainer}>
+            <div className="omrs-input-group">
+              <label htmlFor="status">
+                <Trans i18nKey="status">Status</Trans>
+              </label>
+              <select
+                id="status"
+                value={statusFilter}
+                onChange={e => setStatusFilter(e.target.value)}
+                className={styles.dropdown}
+              >
+                <option value="">Any</option>
+                {statuses.map(t => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>

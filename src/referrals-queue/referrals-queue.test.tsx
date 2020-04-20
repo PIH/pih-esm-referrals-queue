@@ -1,6 +1,12 @@
 import React from "react";
 import { of } from "rxjs";
-import { render, fireEvent, wait, RenderResult } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  wait,
+  RenderResult,
+  within
+} from "@testing-library/react";
 import MockDate from "mockdate";
 import ReferralsQueue from "./referrals-queue.component";
 import { getReferrals } from "./referrals-queue.resource";
@@ -44,7 +50,7 @@ const referrals = [
     encounter_id: 14,
     referral_type: "Family Member",
     encounter_uuid: "encounter-67bc-435d-9929-670a98cefe4e",
-    fulfillment_status: "Completed"
+    fulfillment_status: "Test Complete"
   }
 ];
 
@@ -74,14 +80,14 @@ describe("referrals queue", () => {
 
   it("renders the expected fields", () => {
     for (let referral of referrals) {
-      wrapper.getByText(referral.zl_emr_id);
-      wrapper.getByText(referral.patient_name);
-      wrapper.getByText(referral.referral_type, { selector: "td" });
+      const row = wrapper.getByText(referral.zl_emr_id).closest("tr");
+      within(row).getByText(referral.patient_name);
+      within(row).getByText(referral.referral_type, { selector: "td" });
       if (referral.details) {
-        wrapper.getByText(referral.details);
+        within(row).getByText(referral.details);
       }
       if (referral.fulfillment_status) {
-        wrapper.getByText(referral.fulfillment_status);
+        within(row).getByText(referral.fulfillment_status);
       }
     }
     wrapper.getByText("25 Mar");
@@ -90,21 +96,22 @@ describe("referrals queue", () => {
   });
 
   it("navigates to the links", async () => {
-    const pt0DashLink = wrapper.getByText(referrals[0].zl_emr_id);
+    const table = wrapper.getByRole("table");
+    const pt0DashLink = within(table).getByText(referrals[0].zl_emr_id);
     fireEvent.click(pt0DashLink);
     await wait(() => {
       expect(window.location.href).toBe(
         "/openmrs/pt-dash/" + referrals[0].patient_uuid
       );
     });
-    const pt1VisitLink = wrapper.getByText("23 Mar");
+    const pt1VisitLink = within(table).getByText("23 Mar");
     fireEvent.click(pt1VisitLink);
     await wait(() => {
       expect(window.location.href).toBe(
         `/openmrs/visit/${referrals[1].patient_uuid}/${referrals[1].visit_uuid}`
       );
     });
-    const pendingStatusLink = wrapper.getByText("Pending status");
+    const pendingStatusLink = within(table).getByText("Pending status");
     fireEvent.click(pendingStatusLink);
     await wait(() => {
       expect(window.location.href).toBe(
@@ -114,8 +121,9 @@ describe("referrals queue", () => {
   });
 
   it("doesn't make non-pending statuses into links", () => {
-    expect(wrapper.getByText("Pending status").tagName).toBe("A"); // sanity check
-    expect(wrapper.getByText("Completed").tagName).not.toBe("A"); // the actual test
+    const table = wrapper.getByRole("table");
+    expect(within(table).getByText("Pending status").tagName).toBe("A"); // sanity check
+    expect(within(table).getByText("Test Complete").tagName).not.toBe("A"); // the actual test
   });
 
   it("filters by referral type", () => {
@@ -123,8 +131,9 @@ describe("referrals queue", () => {
       selector: "select"
     });
     fireEvent.change(dropdown, { target: { value: "Mental Health" } });
-    expect(wrapper.queryByText("PTID2")).not.toBeNull();
     expect(wrapper.queryByText("PTID1")).toBeNull();
+    expect(wrapper.queryByText("PTID2")).not.toBeNull();
+    expect(wrapper.queryByText("PTID3")).toBeNull();
   });
 
   it("infers list of referral types from data", () => {
@@ -133,6 +142,14 @@ describe("referrals queue", () => {
     });
     fireEvent.change(dropdown, { target: { value: "Test Referral Type" } });
     expect(wrapper.queryByDisplayValue("Test Referral Type")).not.toBeNull();
+  });
+
+  it("filters by statuses, with dropdown inferred from data", () => {
+    const dropdown = wrapper.getByLabelText("Status", { selector: "select" });
+    fireEvent.change(dropdown, { target: { value: "Test Complete" } });
+    expect(wrapper.queryByText("PTID1")).toBeNull();
+    expect(wrapper.queryByText("PTID2")).toBeNull();
+    expect(wrapper.queryByText("PTID3")).not.toBeNull();
   });
 
   it("calls getReferrals with the correct date arguments", () => {
