@@ -39,7 +39,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     }
   }, [fromDate, toDate]);
 
-  // console.log(referrals);
+  //console.log(referrals);
   const filteredReferrals = referrals
     .filter(r => !referralType || r.referral_type == referralType)
     .filter(r => matchQuery(r, ptQuery));

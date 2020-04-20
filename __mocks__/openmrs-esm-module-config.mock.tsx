@@ -19,8 +19,13 @@ export function useConfig() {
       visitPage: {
         spa: false,
         url: "/visit/${patientUuid}/${visitUuid}"
+      },
+      homeVisitForm: {
+        spa: false,
+        url: "/home-visit-form/${patientUuid}/${visitUuid}/${encounterUuid}"
       }
-    }
+    },
+    pendingStatuses: ["Pending status"]
   };
 }
 
