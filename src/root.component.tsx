@@ -37,6 +37,23 @@ defineConfigSchema("@pih/esm-referrals-queue", {
           "/pihcore/visit/visit.page?patient=${patientUuid}&visit=${visitUuid}&suppressActions=true#/overview",
         validators: [validators.isString, validateUrlTemplate]
       }
+    },
+    homeVisitForm: {
+      spa: {
+        default: false,
+        validators: [validators.isBoolean]
+      },
+      url: {
+        default:
+          "/htmlformentryui/htmlform/editHtmlFormWithStandardUi.page?patientId=${patientUuid}&visitId=${visitUuid}&encounterId=${encounterUuid}&definitionUiResource=file:configuration/pih/htmlforms/section-mch-referral.xml",
+        validators: [validators.isString, validateUrlTemplate]
+      }
+    }
+  },
+  pendingStatuses: {
+    default: ["Pending status", "Referral unmet"],
+    arrayElements: {
+      validators: [validators.isString]
     }
   }
 });

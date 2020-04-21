@@ -43,7 +43,8 @@ export default function Table(props: TableProps) {
                       label={referral.zl_emr_id}
                       spa={config.links.patientDash.spa}
                       url={interpolateString(config.links.patientDash.url, {
-                        patientUuid: referral.patient_uuid
+                        patientUuid:
+                          referral.patient_uuid || referral.person_uuid
                       })}
                     />
                   </td>
@@ -53,14 +54,32 @@ export default function Table(props: TableProps) {
                       label={formatDate(referral.referral_date)}
                       spa={config.links.visitPage.spa}
                       url={interpolateString(config.links.visitPage.url, {
-                        patientUuid: referral.patient_uuid,
+                        patientUuid:
+                          referral.patient_uuid || referral.person_uuid,
                         visitUuid: referral.visit_uuid
                       })}
                     />
                   </td>
                   <td>{referral.referral_type}</td>
                   <td>{referral.details}</td>
-                  <td>&nbsp;</td>
+                  <td>
+                    {config.pendingStatuses.includes(
+                      referral.fulfillment_status
+                    ) ? (
+                      <ConfigurableLink
+                        label={referral.fulfillment_status}
+                        spa={config.links.homeVisitForm.spa}
+                        url={interpolateString(config.links.homeVisitForm.url, {
+                          patientUuid:
+                            referral.patient_uuid || referral.person_uuid,
+                          visitUuid: referral.visit_uuid,
+                          encounterUuid: referral.encounter_uuid
+                        })}
+                      />
+                    ) : (
+                      referral.fulfillment_status
+                    )}
+                  </td>
                 </tr>
               </React.Fragment>
             );
