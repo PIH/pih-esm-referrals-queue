@@ -23,9 +23,21 @@ for information about how to provide configuration files.
 
 - links
   - patientDash
-    - spa (default: false)
-    - url (default: /coreapps/clinicianfacing/patient.page?patientId=${patientUuid}&app=pih.app.clinicianDashboard)
+    - **spa** *(default: false)*\
+      *must be a boolean.*
+    - **url** *(default: /coreapps/clinicianfacing/patient.page?patientId=${patientUuid}&app=pih.app.clinicianDashboard)*\
+      *must be a string. url template may not include backticks.*
   - visitPage
-    - spa (default: false)
-    - url (default: /pihcore/visit/visit.page?patient=${patientUuid}&visit=${visitUuid}#/overview)
+    - **spa** *(default: false)*\
+      *must be a boolean.*
+    - **url** *(default: /pihcore/visit/visit.page?patient=${patientUuid}&visit=${visitUuid}&suppressActions=true#/overview)*\
+      *must be a string. url template may not include backticks.*
+  - homeVisitForm
+    - **spa** *(default: false)*\
+      *must be a boolean.*
+    - **url** *(default: /htmlformentryui/htmlform/editHtmlFormWithStandardUi.page?patientId=${patientUuid}&visitId=${visitUuid}&encounterId=${encounterUuid}&definitionUiResource=file:configuration/pih/htmlforms/section-mch-referral.xml&returnUrl=/mirebalais/spa/referrals-queue)*\
+      *must be a string. url template may not include backticks.*
+- **pendingStatuses** *(default: Pending status,Referral unmet)*
+  - arrayElements\
+    *must be a string.*
 <!-- END OF GENERATED -->
