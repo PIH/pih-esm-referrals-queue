@@ -14,11 +14,12 @@
     "start": "webpack-dev-server",
     "test": "jest --passWithNoTests",
     "typescript": "tsc",
+    "update-translations": "tx pull",
     "watch-tests": "jest --watch"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && concurrently 'yarn:lint' 'yarn:test' 'yarn:typescript'"
+      "pre-commit": "pretty-quick --staged && concurrently 'yarn:lint' 'yarn:test' 'yarn:typescript' 'yarn:autodoc' 'yarn:update-translations' && git add README.md translations/*.json"
     }
   },
   "types": "src/pih-esm-referrals-queue.d.tsx",
