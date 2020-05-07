@@ -1,6 +1,5 @@
 import React from "react";
-import i18n from "i18next";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import "react-dates/initialize";
 import { SingleDatePicker } from "react-dates";
 import moment, { Moment } from "moment";
@@ -24,6 +23,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   const [ptQuery, setPtQuery] = React.useState("");
   const [fromDateFocused, setFromDateFocused] = React.useState(false);
   const [toDateFocused, setToDateFocused] = React.useState(false);
+  const { t, i18n } = useTranslation();
 
   const getLocale = () =>
     i18n.language || window.localStorage.i18nextLng || "en";
@@ -99,7 +99,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 onChange={e => setReferralTypeFilter(e.target.value)}
                 className={styles.dropdown}
               >
-                <option value="">Any</option>
+                <option value="">{t("any", "Any")}</option>
                 {referralTypes.map(t => (
                   <option key={t} value={t}>
                     {t}
@@ -133,7 +133,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 onChange={e => setStatusFilter(e.target.value)}
                 className={styles.dropdown}
               >
-                <option value="">Any</option>
+                <option value="">{t("any", "Any")}</option>
                 {statuses.map(t => (
                   <option key={t} value={t}>
                     {t}
