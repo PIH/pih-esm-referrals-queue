@@ -4,6 +4,9 @@
   "description": "A page for viewing the J9 Home Visits from CommCare",
   "homepage": "https://pihemr.atlassian.net/wiki/spaces/DSS/pages/538116104/PIH+EMR+Referrals+Queue",
   "main": "dist/pih-esm-referrals-queue.js",
+  "directories": {
+    "lib": "dist"
+  },
   "scripts": {
     "analyze": "webpack --mode=production --env.analyze=true",
     "build": "webpack --mode=production",
@@ -15,7 +18,8 @@
     "test": "jest --passWithNoTests",
     "typescript": "tsc",
     "update-translations": "tx pull",
-    "watch-tests": "jest --watch"
+    "watch-tests": "jest --watch",
+    "prepublishOnly": "yarn build"
   },
   "husky": {
     "hooks": {
