@@ -1,6 +1,6 @@
 {
   "name": "@pih/esm-referrals-queue",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A page for viewing the J9 Home Visits from CommCare",
   "homepage": "https://pihemr.atlassian.net/wiki/spaces/DSS/pages/538116104/PIH+EMR+Referrals+Queue",
   "main": "dist/pih-esm-referrals-queue.js",
