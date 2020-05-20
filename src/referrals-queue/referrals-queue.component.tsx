@@ -3,6 +3,7 @@ import { Trans, useTranslation } from "react-i18next";
 import "react-dates/initialize";
 import { SingleDatePicker } from "react-dates";
 import moment, { Moment } from "moment";
+import "moment/locale/fr";
 import { createErrorHandler } from "@openmrs/esm-error-handling";
 import Table from "../table/table.component";
 import styles from "./referrals-queue.css";
@@ -40,7 +41,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
     }
   }, [fromDate, toDate]);
 
-  //console.log(referrals);
+  // console.log(referrals);
   const filteredReferrals = referrals
     .filter(r => !referralTypeFilter || r.referral_type == referralTypeFilter)
     .filter(r => !statusFilter || r.fulfillment_status == statusFilter)
