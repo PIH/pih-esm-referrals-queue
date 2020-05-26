@@ -26,20 +26,22 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
   const [toDateFocused, setToDateFocused] = React.useState(false);
   const { t, i18n } = useTranslation();
 
-  const getLocale = () =>
-    i18n.language || window.localStorage.i18nextLng || "en";
-  moment.locale(getLocale());
+  const language = i18n.language || "en";
+
+  React.useEffect(() => {
+    moment.locale(language === "ht" ? "fr" : language);
+  }, [language]);
 
   React.useEffect(() => {
     if (fromDate && toDate) {
       const sub = getReferrals({
         fromDate: fromDate.format("YYYY-MM-DD"),
         toDate: toDate.format("YYYY-MM-DD"),
-        locale: getLocale()
+        locale: language
       }).subscribe(referrals => setReferrals(referrals), createErrorHandler());
       return () => sub.unsubscribe();
     }
-  }, [fromDate, toDate]);
+  }, [fromDate, toDate, language]);
 
   // console.log(referrals);
   const filteredReferrals = referrals
