@@ -9,5 +9,6 @@ module.exports = {
     "@openmrs/esm-error-handling":
       "<rootDir>/__mocks__/openmrs-esm-error-handling.mock.tsx",
     "\\.(css)$": "identity-obj-proxy"
-  }
+  },
+  setupFiles: ["<rootDir>/src/setup-tests.js"]
 };

@@ -10,7 +10,6 @@ import {
 import MockDate from "mockdate";
 import ReferralsQueue from "./referrals-queue.component";
 import { getReferrals } from "./referrals-queue.resource";
-import ConfigurableLink from "../configurable-link/configurable-link";
 
 jest.mock("./referrals-queue.resource");
 const mockedGetReferrals = getReferrals as jest.Mock;
