@@ -20,12 +20,3 @@ export function formatDate(strDate: string) {
     return date.format("DD MMM YYYY");
   }
 }
-
-export function interpolateString(template: string, params: object) {
-  const names = Object.keys(params);
-  const vals = Object.values(params);
-  if (template.includes("`")) {
-    throw Error("Template may not include backticks");
-  }
-  return new Function(...names, `return \`${template}\`;`)(...vals);
-}
