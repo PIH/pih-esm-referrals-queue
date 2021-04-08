@@ -7,8 +7,6 @@ import {
   getAsyncLifecycle
 } from "@openmrs/esm-framework";
 
-(window as any).defineConfigSchema = defineConfigSchema;
-
 const backendDependencies = {};
 
 const importTranslation = require.context(
@@ -18,10 +16,7 @@ const importTranslation = require.context(
   "lazy"
 );
 
-console.log("loaded");
-
 function setupOpenMRS() {
-  console.log("setup");
   defineConfigSchema("@pih/esm-referrals-queue-app", {
     links: {
       patientDash: {
