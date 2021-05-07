@@ -4,8 +4,8 @@ import {
   render,
   fireEvent,
   screen,
-  wait,
-  within
+  within,
+  waitFor
 } from "@testing-library/react";
 import MockDate from "mockdate";
 import ReferralsQueue from "./referrals-queue.component";
@@ -97,21 +97,21 @@ describe("referrals queue", () => {
     const table = screen.getByRole("table");
     const pt0DashLink = within(table).getByText(referrals[0].zl_emr_id);
     fireEvent.click(pt0DashLink);
-    await wait(() => {
+    await waitFor(() => {
       expect(window.location.href).toBe(
         "/openmrs/pt-dash/" + referrals[0].patient_uuid
       );
     });
     const pt1VisitLink = within(table).getByText("23 Mar");
     fireEvent.click(pt1VisitLink);
-    await wait(() => {
+    await waitFor(() => {
       expect(window.location.href).toBe(
         `/openmrs/visit/${referrals[1].patient_uuid}/${referrals[1].visit_uuid}`
       );
     });
     const pendingStatusLink = within(table).getByText("Pending status");
     fireEvent.click(pendingStatusLink);
-    await wait(() => {
+    await waitFor(() => {
       expect(window.location.href).toBe(
         `/openmrs/home-visit-form/${referrals[1].patient_uuid}/${referrals[1].visit_uuid}/${referrals[1].encounter_uuid}`
       );
