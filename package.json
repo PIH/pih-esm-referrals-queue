@@ -1,6 +1,6 @@
 {
   "name": "@pih/esm-referrals-queue-app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A page for viewing the J9 Home Visits from CommCare",
   "main": "dist/pih-esm-referrals-queue-app.js",
   "types": "src/pih-esm-referrals-queue.d.tsx",
