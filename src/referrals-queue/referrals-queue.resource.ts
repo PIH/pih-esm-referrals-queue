@@ -1,4 +1,4 @@
-import { openmrsObservableFetch } from "@openmrs/esm-api";
+import { openmrsObservableFetch } from "@openmrs/esm-framework";
 import { map } from "rxjs/operators";
 
 export function getReferrals({

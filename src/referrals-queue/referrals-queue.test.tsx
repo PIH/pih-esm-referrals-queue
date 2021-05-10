@@ -3,9 +3,9 @@ import { of } from "rxjs";
 import {
   render,
   fireEvent,
-  wait,
-  RenderResult,
-  within
+  screen,
+  within,
+  waitFor
 } from "@testing-library/react";
 import MockDate from "mockdate";
 import ReferralsQueue from "./referrals-queue.component";
@@ -60,13 +60,12 @@ delete window.location;
 window.location = { href: "/referrals-queue" };
 
 describe("referrals queue", () => {
-  let wrapper: RenderResult;
   const todayString = "2020-10-31";
   beforeEach(() => {
     MockDate.set(todayString + "T10:00:00.000-0400");
     mockedGetReferrals.mockReset();
     mockedGetReferrals.mockReturnValue(of(referrals));
-    wrapper = render(<ReferralsQueue />);
+    render(<ReferralsQueue />);
   });
 
   afterEach(() => {
@@ -79,7 +78,7 @@ describe("referrals queue", () => {
 
   it("renders the expected fields", () => {
     for (let referral of referrals) {
-      const row = wrapper.getByText(referral.zl_emr_id).closest("tr");
+      const row = screen.getByText(referral.zl_emr_id).closest("tr");
       within(row).getByText(referral.patient_name);
       within(row).getByText(referral.referral_type, { selector: "td" });
       if (referral.details) {
@@ -89,30 +88,30 @@ describe("referrals queue", () => {
         within(row).getByText(referral.fulfillment_status);
       }
     }
-    wrapper.getByText("25 Mar");
-    wrapper.getByText("23 Mar");
-    wrapper.getByText("28 Mar");
+    screen.getByText("25 Mar");
+    screen.getByText("23 Mar");
+    screen.getByText("28 Mar");
   });
 
   it("navigates to the links", async () => {
-    const table = wrapper.getByRole("table");
+    const table = screen.getByRole("table");
     const pt0DashLink = within(table).getByText(referrals[0].zl_emr_id);
     fireEvent.click(pt0DashLink);
-    await wait(() => {
+    await waitFor(() => {
       expect(window.location.href).toBe(
         "/openmrs/pt-dash/" + referrals[0].patient_uuid
       );
     });
     const pt1VisitLink = within(table).getByText("23 Mar");
     fireEvent.click(pt1VisitLink);
-    await wait(() => {
+    await waitFor(() => {
       expect(window.location.href).toBe(
         `/openmrs/visit/${referrals[1].patient_uuid}/${referrals[1].visit_uuid}`
       );
     });
     const pendingStatusLink = within(table).getByText("Pending status");
     fireEvent.click(pendingStatusLink);
-    await wait(() => {
+    await waitFor(() => {
       expect(window.location.href).toBe(
         `/openmrs/home-visit-form/${referrals[1].patient_uuid}/${referrals[1].visit_uuid}/${referrals[1].encounter_uuid}`
       );
@@ -120,35 +119,35 @@ describe("referrals queue", () => {
   });
 
   it("doesn't make non-pending statuses into links", () => {
-    const table = wrapper.getByRole("table");
+    const table = screen.getByRole("table");
     expect(within(table).getByText("Pending status").tagName).toBe("A"); // sanity check
     expect(within(table).getByText("Test Complete").tagName).not.toBe("A"); // the actual test
   });
 
   it("filters by referral type", () => {
-    const dropdown = wrapper.getByLabelText("Referral Type", {
+    const dropdown = screen.getByLabelText("Referral Type", {
       selector: "select"
     });
     fireEvent.change(dropdown, { target: { value: "Mental Health" } });
-    expect(wrapper.queryByText("PTID1")).toBeNull();
-    expect(wrapper.queryByText("PTID2")).not.toBeNull();
-    expect(wrapper.queryByText("PTID3")).toBeNull();
+    expect(screen.queryByText("PTID1")).toBeNull();
+    expect(screen.queryByText("PTID2")).not.toBeNull();
+    expect(screen.queryByText("PTID3")).toBeNull();
   });
 
   it("infers list of referral types from data", () => {
-    const dropdown = wrapper.getByLabelText("Referral Type", {
+    const dropdown = screen.getByLabelText("Referral Type", {
       selector: "select"
     });
     fireEvent.change(dropdown, { target: { value: "Test Referral Type" } });
-    expect(wrapper.queryByDisplayValue("Test Referral Type")).not.toBeNull();
+    expect(screen.queryByDisplayValue("Test Referral Type")).not.toBeNull();
   });
 
   it("filters by statuses, with dropdown inferred from data", () => {
-    const dropdown = wrapper.getByLabelText("Status", { selector: "select" });
+    const dropdown = screen.getByLabelText("Status", { selector: "select" });
     fireEvent.change(dropdown, { target: { value: "Test Complete" } });
-    expect(wrapper.queryByText("PTID1")).toBeNull();
-    expect(wrapper.queryByText("PTID2")).toBeNull();
-    expect(wrapper.queryByText("PTID3")).not.toBeNull();
+    expect(screen.queryByText("PTID1")).toBeNull();
+    expect(screen.queryByText("PTID2")).toBeNull();
+    expect(screen.queryByText("PTID3")).not.toBeNull();
   });
 
   it("calls getReferrals with the correct date arguments", () => {
@@ -158,14 +157,14 @@ describe("referrals queue", () => {
       toDate: todayString,
       locale: "en"
     });
-    const fromDateInput = wrapper.getByLabelText("From");
+    const fromDateInput = screen.getByLabelText("From");
     fireEvent.change(fromDateInput, { target: { value: "2020-01-01" } });
     expect(mockedGetReferrals).lastCalledWith({
       fromDate: "2020-01-01",
       toDate: todayString,
       locale: "en"
     });
-    const toDateInput = wrapper.getByLabelText("To");
+    const toDateInput = screen.getByLabelText("To");
     fireEvent.change(toDateInput, { target: { value: "2020-03-01" } });
     expect(mockedGetReferrals).lastCalledWith({
       fromDate: "2020-01-01",
@@ -175,24 +174,24 @@ describe("referrals queue", () => {
   });
 
   it("filters the list of results by patient name query", () => {
-    const queryBox = wrapper.getByLabelText("Filter by patient");
+    const queryBox = screen.getByLabelText("Filter by patient");
     fireEvent.change(queryBox, { target: { value: "Mother" } });
-    expect(wrapper.queryByText("PTID2")).not.toBeNull();
-    expect(wrapper.queryByText("PTID1")).toBeNull();
+    expect(screen.queryByText("PTID2")).not.toBeNull();
+    expect(screen.queryByText("PTID1")).toBeNull();
   });
 
   it("filters the list of results by patient name partial token matches", () => {
-    const queryBox = wrapper.getByLabelText("Filter by patient");
+    const queryBox = screen.getByLabelText("Filter by patient");
     fireEvent.change(queryBox, { target: { value: "dav mo" } });
-    expect(wrapper.queryByText("PTID2")).not.toBeNull();
-    expect(wrapper.queryByText("PTID1")).toBeNull();
+    expect(screen.queryByText("PTID2")).not.toBeNull();
+    expect(screen.queryByText("PTID1")).toBeNull();
   });
 
   it("filters the list of results by patient id", () => {
-    const queryBox = wrapper.getByLabelText("Filter by patient");
+    const queryBox = screen.getByLabelText("Filter by patient");
     fireEvent.change(queryBox, { target: { value: "ptid1" } });
-    expect(wrapper.queryByText("PTID1")).not.toBeNull();
-    expect(wrapper.queryByText("PTID2")).toBeNull();
+    expect(screen.queryByText("PTID1")).not.toBeNull();
+    expect(screen.queryByText("PTID2")).toBeNull();
   });
 
   test.todo("makes the API call with the locale from the user session");

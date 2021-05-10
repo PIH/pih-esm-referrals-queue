@@ -4,7 +4,7 @@ import "react-dates/initialize";
 import { SingleDatePicker } from "react-dates";
 import moment, { Moment } from "moment";
 import "moment/locale/fr";
-import { createErrorHandler } from "@openmrs/esm-error-handling";
+import { createErrorHandler } from "@openmrs/esm-framework";
 import Table from "../table/table.component";
 import styles from "./referrals-queue.css";
 import { getReferrals } from "./referrals-queue.resource";

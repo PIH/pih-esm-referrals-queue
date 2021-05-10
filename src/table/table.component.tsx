@@ -1,9 +1,16 @@
 import React from "react";
-import { useConfig } from "@openmrs/esm-module-config";
+import {
+  ConfigurableLink,
+  interpolateString,
+  useConfig
+} from "@openmrs/esm-framework";
 import { Trans } from "react-i18next";
 import styles from "./table.css";
-import { formatDate, interpolateString } from "../util";
-import ConfigurableLink from "../configurable-link/configurable-link";
+import { formatDate } from "../util";
+
+export interface TableProps {
+  referrals: Referral[];
+}
 
 export default function Table(props: TableProps) {
   const config = useConfig();
@@ -34,61 +41,54 @@ export default function Table(props: TableProps) {
       </thead>
       <tbody>
         {props.referrals &&
-          props.referrals.map((referral, index) => {
-            return (
-              <React.Fragment key={index}>
-                <tr className={styles.tr}>
-                  <td>
+          props.referrals.map((referral, index) => (
+            <React.Fragment key={index}>
+              <tr className={styles.tr}>
+                <td>
+                  <ConfigurableLink
+                    to={interpolateString(config.links.patientDash, {
+                      patientUuid: referral.patient_uuid || referral.person_uuid
+                    })}
+                  >
+                    {referral.zl_emr_id}
+                  </ConfigurableLink>
+                </td>
+                <td>{referral.patient_name}</td>
+                <td>
+                  <ConfigurableLink
+                    to={interpolateString(config.links.visitPage, {
+                      patientUuid:
+                        referral.patient_uuid || referral.person_uuid,
+                      visitUuid: referral.visit_uuid
+                    })}
+                  >
+                    {formatDate(referral.referral_date)}
+                  </ConfigurableLink>
+                </td>
+                <td>{referral.referral_type}</td>
+                <td>{referral.details}</td>
+                <td>
+                  {config.pendingStatuses.includes(
+                    referral.fulfillment_status
+                  ) ? (
                     <ConfigurableLink
-                      label={referral.zl_emr_id}
-                      spa={config.links.patientDash.spa}
-                      url={interpolateString(config.links.patientDash.url, {
-                        patientUuid:
-                          referral.patient_uuid || referral.person_uuid
-                      })}
-                    />
-                  </td>
-                  <td>{referral.patient_name}</td>
-                  <td>
-                    <ConfigurableLink
-                      label={formatDate(referral.referral_date)}
-                      spa={config.links.visitPage.spa}
-                      url={interpolateString(config.links.visitPage.url, {
+                      to={interpolateString(config.links.homeVisitForm, {
                         patientUuid:
                           referral.patient_uuid || referral.person_uuid,
-                        visitUuid: referral.visit_uuid
+                        visitUuid: referral.visit_uuid,
+                        encounterUuid: referral.encounter_uuid
                       })}
-                    />
-                  </td>
-                  <td>{referral.referral_type}</td>
-                  <td>{referral.details}</td>
-                  <td>
-                    {config.pendingStatuses.includes(
-                      referral.fulfillment_status
-                    ) ? (
-                      <ConfigurableLink
-                        label={referral.fulfillment_status}
-                        spa={config.links.homeVisitForm.spa}
-                        url={interpolateString(config.links.homeVisitForm.url, {
-                          patientUuid:
-                            referral.patient_uuid || referral.person_uuid,
-                          visitUuid: referral.visit_uuid,
-                          encounterUuid: referral.encounter_uuid
-                        })}
-                      />
-                    ) : (
-                      referral.fulfillment_status
-                    )}
-                  </td>
-                </tr>
-              </React.Fragment>
-            );
-          })}
+                    >
+                      {referral.fulfillment_status}
+                    </ConfigurableLink>
+                  ) : (
+                    referral.fulfillment_status
+                  )}
+                </td>
+              </tr>
+            </React.Fragment>
+          ))}
       </tbody>
     </table>
   );
 }
-
-type TableProps = {
-  referrals: Referral[];
-};
