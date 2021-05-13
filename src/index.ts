@@ -1,4 +1,3 @@
-import "./set-public-path";
 import {
   defineConfigSchema,
   Type,

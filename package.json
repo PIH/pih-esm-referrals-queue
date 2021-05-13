@@ -2,13 +2,13 @@
   "name": "@pih/esm-referrals-queue-app",
   "version": "1.0.5",
   "description": "A page for viewing the J9 Home Visits from CommCare",
-  "main": "dist/pih-esm-referrals-queue-app.js",
-  "types": "src/pih-esm-referrals-queue.d.tsx",
+  "browser": "dist/pih-esm-referrals-queue-app.js",
+  "main": "src/index.ts",
   "license": "MPL-2.0",
   "homepage": "https://pihemr.atlassian.net/wiki/spaces/DSS/pages/538116104/PIH+EMR+Referrals+Queue",
   "scripts": {
     "start": "openmrs debug --run-project --backend https://humci.pih-emr.org/ --api-url /mirebalais/",
-    "serve": "webpack-dev-server",
+    "serve": "webpack serve --mode development",
     "build": "webpack --mode production",
     "analyze": "webpack --mode=production --env.analyze=true",
     "lint": "eslint src --ext tsx",
@@ -40,9 +40,6 @@
   "bugs": {
     "url": "https://github.com/pih/esm-referrals-queue/issues"
   },
-  "dependencies": {
-    "systemjs-webpack-interop": "^1.1.2"
-  },
   "peerDependencies": {
     "@openmrs/esm-framework": "3.x",
     "dayjs": "^1.x",
@@ -61,26 +58,19 @@
     "@testing-library/jest-dom": "^5.0.2",
     "@testing-library/react": "^11.2.6",
     "@types/jest": "^24.9.1",
-    "@types/moment": "^2.13.0",
     "@types/react": "^16.9.19",
     "@types/react-dates": "^17.1.10",
     "@types/react-dom": "^16.9.5",
-    "@types/systemjs": "^6.1.0",
-    "@types/webpack-env": "^1.15.1",
+    "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/parser": "^2.18.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
-    "babel-loader": "^8.0.6",
-    "browserslist-config-openmrs": "^1.0.0",
-    "clean-webpack-plugin": "^3.0.0",
     "concurrently": "^5.1.0",
     "coveralls": "^3.0.7",
-    "css-loader": "^3.4.2",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.6.0",
     "eslint-config-ts-react-important-stuff": "^2.0.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "fork-ts-checker-webpack-plugin": "^1.6.0",
     "husky": "^3.0.9",
     "i18next": "^19.1.0",
     "identity-obj-proxy": "^3.0.0",
@@ -88,7 +78,7 @@
     "lint-staged": "^9.4.3",
     "mockdate": "^2.0.5",
     "moment": "^2.24.0",
-    "openmrs": "next",
+    "openmrs": "^3.1.10-pre.247",
     "prettier": "^1.19.1",
     "pretty-quick": "^1.11.1",
     "react-dates": "^21.8.0",
@@ -96,13 +86,7 @@
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "rxjs": "^6.5.4",
-    "style-loader": "^1.1.3",
-    "typescript": "^3.7.5",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
-    "webpack-config-single-spa-react": "^1.3.0",
-    "webpack-dev-server": "^3.10.1",
-    "webpack-merge": "^4.2.2"
+    "typescript": "^3.7.5"
   },
   "resolutions": {
     "@types/react": "16.14.6"
