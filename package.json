@@ -87,8 +87,5 @@
     "react-router-dom": "^5.1.2",
     "rxjs": "^6.5.4",
     "typescript": "^3.7.5"
-  },
-  "resolutions": {
-    "@types/react": "16.14.6"
   }
 }
