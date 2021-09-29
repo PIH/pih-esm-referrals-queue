@@ -17,7 +17,8 @@
     "prepublishOnly": "npm run build",
     "test": "jest",
     "coverage": "npm test -- --coverage",
-    "update-translations": "tx pull"
+    "update-translations": "tx pull",
+    "prepare": "husky install"
   },
   "browserslist": [
     "extends browserslist-config-openmrs"
@@ -27,11 +28,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged && concurrently 'npm:lint' 'npm:test' 'npm:typescript' 'npm:update-translations' && git add translations/*.json"
-    }
   },
   "repository": {
     "type": "git",
@@ -71,7 +67,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-ts-react-important-stuff": "^3.0.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.2",
+    "husky": "^6.0.0",
     "i18next": "^21.1.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.2.3",
