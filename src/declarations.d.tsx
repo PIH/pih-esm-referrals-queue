@@ -1,6 +1,6 @@
-// This entire file will be deleted once we have typescript definitions
-// for @openmrs/esm-api published to npm
 declare type Observable<T> = import("rxjs").Observable<T>;
+
+declare module "uuid";  // Hack to fix a problem with @openmrs/esm-offline -- Sep 28, 2021
 
 declare module "*.css";
 

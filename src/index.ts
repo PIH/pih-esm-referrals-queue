@@ -3,7 +3,7 @@ import {
   Type,
   validators,
   registerBreadcrumbs,
-  getAsyncLifecycle
+  getAsyncLifecycle,
 } from "@openmrs/esm-framework";
 
 const backendDependencies = {};
@@ -22,15 +22,15 @@ function setupOpenMRS() {
         _type: Type.String,
         _default:
           "${openmrsBase}/coreapps/clinicianfacing/patient.page?patientId=${patientUuid}&app=pih.app.clinicianDashboard",
-        _validators: [validators.isUrlWithTemplateParameters(["patientUuid"])]
+        _validators: [validators.isUrlWithTemplateParameters(["patientUuid"])],
       },
       visitPage: {
         _type: Type.String,
         _default:
           "${openmrsBase}/pihcore/visit/visit.page?patient=${patientUuid}&visit=${visitUuid}&suppressActions=true#/overview",
         _validators: [
-          validators.isUrlWithTemplateParameters(["patientUuid", "visitUuid"])
-        ]
+          validators.isUrlWithTemplateParameters(["patientUuid", "visitUuid"]),
+        ],
       },
       homeVisitForm: {
         _type: Type.String,
@@ -40,18 +40,18 @@ function setupOpenMRS() {
           validators.isUrlWithTemplateParameters([
             "patientUuid",
             "visitUuid",
-            "encounterUuid"
-          ])
-        ]
-      }
+            "encounterUuid",
+          ]),
+        ],
+      },
     },
     pendingStatuses: {
       _type: Type.Array,
       _default: ["Pending status", "Referral unmet"],
       _elements: {
-        _type: Type.String
-      }
-    }
+        _type: Type.String,
+      },
+    },
   });
 
   const moduleName = "@pih/esm-referrals-queue-app";
@@ -59,19 +59,19 @@ function setupOpenMRS() {
 
   const options = {
     featureName: pageName,
-    moduleName
+    moduleName,
   };
 
   registerBreadcrumbs([
     {
       path: `${window.spaBase}/${pageName}`,
-      title: "Referrals Queue"
-    }
+      title: "Referrals Queue",
+    },
   ]);
 
   return {
     lifecycle: getAsyncLifecycle(() => import("./root.component"), options),
-    activate: pageName
+    activate: pageName,
   };
 }
 

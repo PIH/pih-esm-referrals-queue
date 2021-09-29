@@ -6,8 +6,8 @@ i18n.use(initReactI18next).init({
   resources: {
     en: {},
     fr: {},
-    ht: {}
-  }
+    ht: {},
+  },
 });
 
 window.getOpenmrsSpaBase = () => "openmrs/spa";

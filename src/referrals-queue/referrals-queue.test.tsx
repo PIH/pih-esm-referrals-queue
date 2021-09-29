@@ -5,7 +5,7 @@ import {
   fireEvent,
   screen,
   within,
-  waitFor
+  waitFor,
 } from "@testing-library/react";
 import MockDate from "mockdate";
 import ReferralsQueue from "./referrals-queue.component";
@@ -25,7 +25,7 @@ const referrals = [
     encounter_id: 12,
     referral_type: "Test Referral Type",
     encounter_uuid: "encounter-0fe1-4318-95a4-641d31745e09",
-    fulfillment_status: null
+    fulfillment_status: null,
   },
   {
     patient_uuid: "ptbbbbbb-de0e-489f-b4c7-fe4579e07aa9",
@@ -37,7 +37,7 @@ const referrals = [
     encounter_id: 13,
     referral_type: "Mental Health",
     encounter_uuid: "encounter-d5cb-4f7e-a1aa-bd6741a96381",
-    fulfillment_status: "Pending status"
+    fulfillment_status: "Pending status",
   },
   {
     person_uuid: "ptcccccc-de0e-489f-b4c7-fe4579e07aa9",
@@ -49,8 +49,8 @@ const referrals = [
     encounter_id: 14,
     referral_type: "Family Member",
     encounter_uuid: "encounter-67bc-435d-9929-670a98cefe4e",
-    fulfillment_status: "Test Complete"
-  }
+    fulfillment_status: "Test Complete",
+  },
 ];
 
 (window as any).openmrsBase = "/openmrs";
@@ -126,7 +126,7 @@ describe("referrals queue", () => {
 
   it("filters by referral type", () => {
     const dropdown = screen.getByLabelText("Referral Type", {
-      selector: "select"
+      selector: "select",
     });
     fireEvent.change(dropdown, { target: { value: "Mental Health" } });
     expect(screen.queryByText("PTID1")).toBeNull();
@@ -136,7 +136,7 @@ describe("referrals queue", () => {
 
   it("infers list of referral types from data", () => {
     const dropdown = screen.getByLabelText("Referral Type", {
-      selector: "select"
+      selector: "select",
     });
     fireEvent.change(dropdown, { target: { value: "Test Referral Type" } });
     expect(screen.queryByDisplayValue("Test Referral Type")).not.toBeNull();
@@ -155,21 +155,21 @@ describe("referrals queue", () => {
     expect(mockedGetReferrals).lastCalledWith({
       fromDate: monthAgoString,
       toDate: todayString,
-      locale: "en"
+      locale: "en",
     });
     const fromDateInput = screen.getByLabelText("From");
     fireEvent.change(fromDateInput, { target: { value: "2020-01-01" } });
     expect(mockedGetReferrals).lastCalledWith({
       fromDate: "2020-01-01",
       toDate: todayString,
-      locale: "en"
+      locale: "en",
     });
     const toDateInput = screen.getByLabelText("To");
     fireEvent.change(toDateInput, { target: { value: "2020-03-01" } });
     expect(mockedGetReferrals).lastCalledWith({
       fromDate: "2020-01-01",
       toDate: "2020-03-01",
-      locale: "en"
+      locale: "en",
     });
   });
 

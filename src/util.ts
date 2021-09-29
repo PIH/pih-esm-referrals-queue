@@ -11,9 +11,7 @@ export function formatDate(strDate: string) {
     date.month() === today.month() &&
     date.year() === today.year()
   ) {
-    return moment()
-      .calendar()
-      .split(" ")[0]; // locale-specific 'Today'
+    return moment().calendar().split(" ")[0]; // locale-specific 'Today'
   } else if (date.year() === today.year()) {
     return date.format("DD MMM");
   } else {

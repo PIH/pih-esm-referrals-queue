@@ -38,20 +38,25 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
       const sub = getReferrals({
         fromDate: fromDate.format("YYYY-MM-DD"),
         toDate: toDate.format("YYYY-MM-DD"),
-        locale: language
-      }).subscribe(referrals => setReferrals(referrals), createErrorHandler());
+        locale: language,
+      }).subscribe(
+        (referrals) => setReferrals(referrals),
+        createErrorHandler()
+      );
       return () => sub.unsubscribe();
     }
   }, [fromDate, toDate, language]);
 
   // console.log(referrals);
   const filteredReferrals = referrals
-    .filter(r => !referralTypeFilter || r.referral_type == referralTypeFilter)
-    .filter(r => !statusFilter || r.fulfillment_status == statusFilter)
-    .filter(r => matchQuery(r, ptQuery));
-  const referralTypes = [...new Set(referrals.map(r => r.referral_type))];
+    .filter((r) => !referralTypeFilter || r.referral_type == referralTypeFilter)
+    .filter((r) => !statusFilter || r.fulfillment_status == statusFilter)
+    .filter((r) => matchQuery(r, ptQuery));
+  const referralTypes = [...new Set(referrals.map((r) => r.referral_type))];
   const statuses = [
-    ...new Set(referrals.map(r => r.fulfillment_status).filter(r => r != null))
+    ...new Set(
+      referrals.map((r) => r.fulfillment_status).filter((r) => r != null)
+    ),
   ];
   return (
     <div className={styles.container}>
@@ -68,7 +73,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
               <SingleDatePicker
                 id="from-date"
                 date={fromDate}
-                onDateChange={date => setFromDate(date)}
+                onDateChange={(date) => setFromDate(date)}
                 focused={fromDateFocused}
                 onFocusChange={({ focused }) => setFromDateFocused(focused)}
                 isOutsideRange={(date: Moment) => date.isAfter(today)}
@@ -83,7 +88,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
               <SingleDatePicker
                 id="to-date"
                 date={toDate}
-                onDateChange={date => setToDate(date)}
+                onDateChange={(date) => setToDate(date)}
                 focused={toDateFocused}
                 onFocusChange={({ focused }) => setToDateFocused(focused)}
                 isOutsideRange={(date: Moment) => date.isAfter(today)}
@@ -100,11 +105,11 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
               <select
                 id="referral-type"
                 value={referralTypeFilter}
-                onChange={e => setReferralTypeFilter(e.target.value)}
+                onChange={(e) => setReferralTypeFilter(e.target.value)}
                 className={styles.dropdown}
               >
                 <option value="">{t("any", "Any")}</option>
-                {referralTypes.map(t => (
+                {referralTypes.map((t) => (
                   <option key={t} value={t}>
                     {t}
                   </option>
@@ -121,7 +126,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
                 id="query-input"
                 type="text"
                 value={ptQuery}
-                onChange={e => setPtQuery(e.target.value)}
+                onChange={(e) => setPtQuery(e.target.value)}
                 className="omrs-input-outlined"
               />
             </div>
@@ -134,11 +139,11 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
               <select
                 id="status"
                 value={statusFilter}
-                onChange={e => setStatusFilter(e.target.value)}
+                onChange={(e) => setStatusFilter(e.target.value)}
                 className={styles.dropdown}
               >
                 <option value="">{t("any", "Any")}</option>
-                {statuses.map(t => (
+                {statuses.map((t) => (
                   <option key={t} value={t}>
                     {t}
                   </option>
@@ -158,7 +163,7 @@ export default function ReferralsQueue(props: ReferralsQueueProps) {
 function matchQuery(referral: Referral, query: string): boolean {
   return (
     !query ||
-    prepareQuery(query).every(regexp =>
+    prepareQuery(query).every((regexp) =>
       regexp.test(removeDiacritics(referral.patient_name))
     ) ||
     new RegExp(query, "i").test(referral.zl_emr_id)
@@ -166,7 +171,7 @@ function matchQuery(referral: Referral, query: string): boolean {
 }
 
 function prepareQuery(query: string): RegExp[] {
-  return query.split(/\s/).map(token => {
+  return query.split(/\s/).map((token) => {
     const tokenCleaned = removeDiacritics(token);
     return new RegExp("\\b" + tokenCleaned, "i");
   });

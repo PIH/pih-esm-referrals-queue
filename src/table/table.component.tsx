@@ -2,7 +2,7 @@ import React from "react";
 import {
   ConfigurableLink,
   interpolateString,
-  useConfig
+  useConfig,
 } from "@openmrs/esm-framework";
 import { Trans } from "react-i18next";
 import styles from "./table.css";
@@ -47,7 +47,8 @@ export default function Table(props: TableProps) {
                 <td>
                   <ConfigurableLink
                     to={interpolateString(config.links.patientDash, {
-                      patientUuid: referral.patient_uuid || referral.person_uuid
+                      patientUuid:
+                        referral.patient_uuid || referral.person_uuid,
                     })}
                   >
                     {referral.zl_emr_id}
@@ -59,7 +60,7 @@ export default function Table(props: TableProps) {
                     to={interpolateString(config.links.visitPage, {
                       patientUuid:
                         referral.patient_uuid || referral.person_uuid,
-                      visitUuid: referral.visit_uuid
+                      visitUuid: referral.visit_uuid,
                     })}
                   >
                     {formatDate(referral.referral_date)}
@@ -76,7 +77,7 @@ export default function Table(props: TableProps) {
                         patientUuid:
                           referral.patient_uuid || referral.person_uuid,
                         visitUuid: referral.visit_uuid,
-                        encounterUuid: referral.encounter_uuid
+                        encounterUuid: referral.encounter_uuid,
                       })}
                     >
                       {referral.fulfillment_status}
